@@ -20,7 +20,7 @@ public class Item
 
 	public Item()
 	{
-
+		itemID = -1;
 	}
 
 	public Item(string name, int id, string desc, int power, int speed, ItemType type)
