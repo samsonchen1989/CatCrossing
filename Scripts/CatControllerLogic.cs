@@ -18,22 +18,27 @@ public class CatControllerLogic : MonoBehaviour {
 	private Transform gameCamTransform;
 
 	// Private global only
-	private float speed = 0.0f;
 	private float curDirection = 0.0f;
 	private float leftX = 0.0f;
 	private float leftY = 0.0f;
 	private float speedDampTime = 0.05f;
 
-	private Vector3 curNormal = Vector3.up; // smoothed terrain normal
+	private CharacterController controller;
+	private float speed = 6.0f;
+	private float jumpSpeed = 8.0f;
+	private float gravity = 60.0f;
+	private bool canJump = true;
+
 	private bool onGround;
+	private Vector3 curNormal = Vector3.up; // smoothed terrain normal
+	private Vector3 moveDirection = Vector3.zero;
 
 	private CatState state = CatState.Idle;
-
 	private RaycastHit hit;
 
 	private const float inputThreshold = 0.01f;	
 	private const float groundDrag = 5.0f;
-	private const float turnSpeed = 3.0f;
+	private const float turnSpeed = 2.0f;
 
 	#endregion
 
@@ -56,7 +61,50 @@ public class CatControllerLogic : MonoBehaviour {
 			Debug.LogError("Couldn't find game main camera");
 		}
 	}
-	
+
+	// Update is called once per frame
+	void Update () {
+		if (animator) {
+			//pull values from controller/keyboard, A/D to rotate, W/S to move
+			leftX = Input.GetAxis("Horizontal");
+			leftY = Input.GetAxis("Vertical");
+
+			// W,S to move character
+			animator.SetFloat("Speed", leftY, speedDampTime, Time.deltaTime);
+			
+			if (state == CatState.Jump) {
+				animator.SetBool("Jump", true);
+			} else {
+				animator.SetBool("Jump", false);
+			}
+		}
+		
+		if (Input.GetMouseButton(1)) {
+			curDirection = gameCamTransform.rotation.eulerAngles.y;
+		}
+		
+		float rotationAmount = leftX * turnSpeed;
+		curDirection = (curDirection + rotationAmount) % 360;
+
+		controller = GetComponent<CharacterController>();
+
+		transform.rotation = Quaternion.Euler(0, curDirection, 0);
+		
+		moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
+		moveDirection = transform.TransformDirection(moveDirection);
+		moveDirection *= speed;
+
+		if (Input.GetButton("Jump")) {
+			moveDirection.y = jumpSpeed;
+			canJump = false;
+		}
+
+		moveDirection.y -= gravity * Time.deltaTime;
+		controller.Move(moveDirection * Time.deltaTime);
+	}
+
+	/* If you prefer to use Rigidbody and Capsule Collider to control the player,
+	 * you can use code below, add force to push player.
 	// Update is called once per frame
 	void Update () {
 		if (animator) {
@@ -85,12 +133,12 @@ public class CatControllerLogic : MonoBehaviour {
 		Ray ray = new Ray(transform.position, -1 * Vector3.up);
 		if (Physics.Raycast(ray, out hit)) {
 			Debug.DrawLine(ray.origin, hit.point, Color.blue);
-			//Debug.Log("hit distance:" + hit.distance);
+			//Debug.Log("Hit distance:" + hit.distance);
 			curNormal = Vector3.Lerp(curNormal, hit.normal, 4 * Time.deltaTime);
-			Quaternion rotateGround = Quaternion.FromToRotation (Vector3.up, curNormal);
-
-			transform.rotation = rotateGround * Quaternion.Euler(0, curDirection, 0);
-			//Debug.Log("curDirection:" + curDirection);
+			//Quaternion rotateGround = Quaternion.FromToRotation (Vector3.up, curNormal);
+			//transform.rotation = rotateGround * Quaternion.Euler(0, curDirection, 0);
+			transform.rotation = Quaternion.Euler(0, curDirection, 0);
+			Debug.Log("Set rotation");
 
 			if (hit.distance < 0.1) {
 				onGround = true;
@@ -103,7 +151,9 @@ public class CatControllerLogic : MonoBehaviour {
 			}
 		}
 	}
+	*/
 
+	/*
 	void FixedUpdate()
 	{
 		if (onGround) {
@@ -111,10 +161,12 @@ public class CatControllerLogic : MonoBehaviour {
 			Vector3 movement = moveAxis * playerBody.transform.forward;
 			if (movement.magnitude > inputThreshold && moveAxis > 0) {
 				playerBody.AddForce(movement.normalized * 5.0f, ForceMode.VelocityChange);
+				Debug.Log("Add force");
 				state = CatState.Running;
 			} else {
 				playerBody.velocity = new Vector3(0.0f, playerBody.velocity.y, 0.0f);
 			}
 		}
 	}
+	*/
 }

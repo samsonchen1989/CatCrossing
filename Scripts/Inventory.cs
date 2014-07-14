@@ -20,7 +20,8 @@ public class Inventory : MonoBehaviour {
 	private int prevIndex;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		database = GameObject.FindGameObjectWithTag("Item Database").GetComponent<ItemDatabase>();
 		if (!database) {
 			Debug.LogError("Fail to find item database.");
@@ -32,10 +33,13 @@ public class Inventory : MonoBehaviour {
 			inventory.Add(new Item());
 		}
 
-		AddItem(1);
 		AddItem(0);
-		print (InventoryContains(2));
-		//RemoveItem(1);
+		AddItem(1);
+		AddItem(2);
+		AddItem(0);
+		AddItem(2);
+		AddItem(2);
+		AddItem(2);
 	}
 	
 	// Update is called once per frame
@@ -59,8 +63,8 @@ public class Inventory : MonoBehaviour {
 		}
 
 		if (draggingItem) {
-			GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64),
-			                draggedItem.itemIcon);
+			drawTextureAndCount(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64),
+			                    draggedItem);
 		}
 	}
 
@@ -74,15 +78,13 @@ public class Inventory : MonoBehaviour {
 			for (int x = 0; x < slotsX; x++) {
 				Rect slotRect = new Rect(Screen.width / 2 - slotsX / 2 * 70 + x * 70,
 				                         0.85f * Screen.height + y * 70, 64, 64);
-				//string may be used to show item numbers later
-				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
 
 				slots[i] = inventory[i];
+				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
 				if (slots[i].itemName != null) {
-					GUI.DrawTexture(slotRect, slots[i].itemIcon);
+					drawTextureAndCount(slotRect, slots[i]);
 					if (slotRect.Contains(currentEvent.mousePosition)) {
 						if (currentEvent.button == 0 && currentEvent.type == EventType.mouseDown && !draggingItem) {
-						//if (e.button == 0 && !draggingItem) {
 							draggingItem = true;
 							prevIndex = i;
 							draggedItem = slots[i];
@@ -129,31 +131,40 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-	public void RemoveItem(int id)
+	// Add item:
+	// 1. If not in itemDatabase, just return error.
+	// 2. If current inventory has item with given id and count is not over maxCount, just add count by 1.
+	// 3. Otherwise, find a new empty inventory slot to put the item.
+	public bool AddItem(int id)
 	{
+		Item resultItem = database.items.Find(
+			delegate(Item item) {
+				return item.itemID == id;
+			}
+		);
+
+		if (resultItem == null) {
+			Debug.Log("Fail to find item with given id.");
+			return false;
+		}
+
 		for (int i = 0; i < inventory.Count; i++) {
-			if (inventory[i].itemName != null && inventory[i].itemID == id) {
-				inventory[i] = new Item();
-				break;
+			if (inventory[i].itemID == id && inventory[i].itemCount < inventory[i].itemMaxCount) {
+				inventory[i].itemCount++;
+				return true;
 			}
 		}
-	}
 
-	public void AddItem(int id)
-	{
 		for (int i = 0; i < inventory.Count; i++) {
 			if (inventory[i].itemName == null) {
-				for (int j = 0; j < database.items.Count; j++) {
-					if (database.items[j].itemID == id) {
-						inventory[i] = database.items[j];
-						return;
-					}
-				}
-
-				Debug.Log("Fail to find item with given id.");
-				return;
+				inventory[i] = new Item(resultItem);
+				inventory[i].itemCount = 1;
+				return true;
 			}
 		}
+
+		// No place to hold the item, return false.
+		return false;
 	}
 
 	public bool InventoryContains(int id)
@@ -171,6 +182,7 @@ public class Inventory : MonoBehaviour {
 	{
 		for (int i = 0; i < inventory.Count; i++) {
 			PlayerPrefs.SetInt("Inventory " + i, inventory[i].itemID);
+			PlayerPrefs.SetInt("Count" + i, inventory[i].itemCount);
 		}
 	}
 
@@ -179,16 +191,23 @@ public class Inventory : MonoBehaviour {
 		for (int i = 0; i < inventory.Count; i++) {
 			if (PlayerPrefs.GetInt("Inventory " + i) >= 0) {
 				inventory[i] = database.items[PlayerPrefs.GetInt("Inventory " + i)];
+				inventory[i].itemCount = PlayerPrefs.GetInt("Count" + i);
 			} else {
 				inventory[i] = new Item();
 			}
 		}
 	}
 
+	private void drawTextureAndCount(Rect rect, Item item)
+	{
+		GUI.DrawTexture(rect, item.itemIcon);
+		GUI.Label(new Rect(rect.x + 50, rect.y + 45, 30, 30), item.itemCount.ToString());
+	}
+
 	private void DrawTooltip()
 	{
 		float dynamicHeight = skin.box.CalcHeight(new GUIContent(toolTip), 200);
-		GUI.Box(new Rect(Event.current.mousePosition.x + 10, Event.current.mousePosition.y - 100, 200, dynamicHeight),
+		GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y - 100, 200, dynamicHeight),
 		        toolTip, skin.GetStyle("Box"));
 	}
 
@@ -202,6 +221,11 @@ public class Inventory : MonoBehaviour {
 
 	private void UseConsumable(Item item, int slot)
 	{
+		item.itemCount--;
+		if (item.itemCount == 0) {
+			inventory[slot] = new Item();
+		}
+
 		switch(item.itemID) {
 		case 0:
 			print ("Use consumble:" + item.itemName);

@@ -40,7 +40,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 	void Start()
 	{
 		playerTransform = GameObject.FindWithTag("Player").transform;
-		toCamera = Vector3.up * distanceUp + (-1) * playerTransform.forward * distanceAway;
+		toCamera = playerTransform.up * distanceUp + (-1) * playerTransform.forward * distanceAway;
 	}
 	
 	// Update is called once per frame
@@ -64,7 +64,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 		this.transform.position = playerTransform.position + toCamera;
 
-		yHoriRotate = (yHoriRotate + Input.GetAxis("Horizontal") * 3.0f);
+		yHoriRotate = (yHoriRotate + Input.GetAxis("Horizontal") * 2.0f);
 		this.transform.RotateAround(playerTransform.position, playerTransform.up, yHoriRotate);
 
 		toCamera = toCamera * (1 - Input.GetAxis("Mouse ScrollWheel"));

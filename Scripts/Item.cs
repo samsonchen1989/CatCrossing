@@ -12,6 +12,9 @@ public class Item
 	public int itemSpeed;
 	public ItemType itemType;
 
+	public int itemCount;
+	public int itemMaxCount;
+
 	public enum ItemType {
 		Weapon,
 		Consumable,
@@ -32,5 +35,29 @@ public class Item
 		itemPower = power;
 		itemSpeed = speed;
 		itemType = type;
+
+		itemCount = 0;
+		itemMaxCount = 99;
 	}
+
+	public Item(Item preItem)
+	{
+		itemName = preItem.itemName;
+		itemID = preItem.itemID;
+		itemDesc = preItem.itemDesc;
+		itemIcon = preItem.itemIcon;
+		itemPower = preItem.itemPower;
+		itemSpeed = preItem.itemSpeed;
+		itemType = preItem.itemType;
+
+		itemCount = 0;
+		itemMaxCount = preItem.itemMaxCount;
+	}
+
+	public Item(string name, int id, string desc, int power, int speed, ItemType type, int maxCount)
+		: this(name, id, desc, power, speed, type)
+	{	
+		itemMaxCount = maxCount;
+	}
+
 }
