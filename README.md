@@ -4,6 +4,7 @@ Catcrossing
 A 3D survival game made by unity3d, scripts part.
 
 Goals:
+
 1. Player controller.
 Done. (Use Character Controller instead of RigidBody & force)
 2. Third person camera.
