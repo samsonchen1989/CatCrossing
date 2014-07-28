@@ -17,7 +17,7 @@ http://catcrossing.net/wordpress/?p=175
 5. Simple Terrian environment.
 (Done)
 6. Item and Inventory system.
-(Working...)
+(Done, 14.07.29)
 7. Dialog & Quest system.
 8. Game State Control, start, pause, game over.
 9. Mini map.
