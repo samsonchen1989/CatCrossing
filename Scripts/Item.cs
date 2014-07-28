@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 [System.Serializable]
 public class Item
@@ -7,57 +7,63 @@ public class Item
 	public string itemName;
 	public int itemID;
 	public string itemDesc;
-	public Texture2D itemIcon;
-	public int itemPower;
-	public int itemSpeed;
 	public ItemType itemType;
+	public int itemMaxStack;
 
-	public int itemCount;
-	public int itemMaxCount;
-
+	public Texture2D itemIcon;
+	public GameObject ItemPrefab;
+	
 	public enum ItemType {
+		None,
 		Weapon,
+		Resource,
 		Consumable,
 		Quest
 	}
-
+	
 	public Item()
 	{
 		itemID = -1;
 	}
 
-	public Item(string name, int id, string desc, int power, int speed, ItemType type)
+	public Item(string name, int id, string desc, ItemType type)
 	{
 		itemName = name;
 		itemID = id;
 		itemDesc = desc;
 		itemIcon = Resources.Load<Texture2D>("Item Icons/" + name);
-		itemPower = power;
-		itemSpeed = speed;
 		itemType = type;
 
-		itemCount = 0;
-		itemMaxCount = 99;
+		itemMaxStack = 99;
 	}
 
-	public Item(Item preItem)
+	public Item(Item copyItem)
 	{
-		itemName = preItem.itemName;
-		itemID = preItem.itemID;
-		itemDesc = preItem.itemDesc;
-		itemIcon = preItem.itemIcon;
-		itemPower = preItem.itemPower;
-		itemSpeed = preItem.itemSpeed;
-		itemType = preItem.itemType;
+		itemName = copyItem.itemName;
+		itemID = copyItem.itemID;
+		itemDesc = copyItem.itemDesc;
+		itemIcon = copyItem.itemIcon;
+		itemType = copyItem.itemType;
 
-		itemCount = 0;
-		itemMaxCount = preItem.itemMaxCount;
+		itemMaxStack = copyItem.itemMaxStack;
 	}
 
-	public Item(string name, int id, string desc, int power, int speed, ItemType type, int maxCount)
-		: this(name, id, desc, power, speed, type)
+	public Item(string name, int id, string desc, ItemType type, int maxCount)
+		: this(name, id, desc, type)
 	{	
-		itemMaxCount = maxCount;
+		itemMaxStack = maxCount;
 	}
 
+	public Item Clone()
+	{
+		//return a shallow copy, as we don't need to clone the prefab and icon
+		return (Item)this.MemberwiseClone();
+	}
+}
+
+[System.Serializable]
+public class ItemStack
+{
+	public int num;
+	public Item item;
 }

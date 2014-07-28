@@ -27,7 +27,6 @@ public class NPC_Dialog : MonoBehaviour {
 		bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity);
 		if (hit) {
 			GameObject hitObject = hitInfo.transform.gameObject;
-			Debug.Log("hitObject:" + hitObject.name);
 			if (hitObject && hitObject.name == "NPC1") {
 				if (clickable && Input.GetMouseButtonUp(1)) {
 					displayDialog = true;

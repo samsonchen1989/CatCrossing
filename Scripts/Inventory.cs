@@ -1,230 +1,127 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
 
 public class Inventory : MonoBehaviour {
-	public int slotsX;
-	public int slotsY;
-	public GUISkin skin;
 
-	public List<Item> inventory = new List<Item>();
-	public List<Item> slots = new List<Item>();
-	private ItemDatabase database;
+	#region Sigleton Code
 
-	private bool showInventory = true;
-	private bool showToolTip = false;
-	private string toolTip = "";
-
-	private bool draggingItem;
-	private Item draggedItem;
-	private int prevIndex;
-
-	// Use this for initialization
-	void Start ()
+	private static Inventory instance;
+	public static Inventory Instance
 	{
-		database = GameObject.FindGameObjectWithTag("Item Database").GetComponent<ItemDatabase>();
-		if (!database) {
-			Debug.LogError("Fail to find item database.");
-			return;
+		get {
+			if (instance == null) {
+				Debug.LogError("Fail to find Inventory Instance.");
+			}
+
+			return instance;
+		}
+	}
+
+	#endregion
+
+	public int inventorySize = 14;
+	public int InventorySize {
+		get {
+			return inventorySize;
+		}
+	}
+
+	public List<ItemStack> inventory;
+	
+	public ReadOnlyCollection<ItemStack> readonlyInventory;
+	public ReadOnlyCollection<ItemStack> InventoryStack {
+		get {
+			return readonlyInventory;
+		}
+	}
+
+	void Awake()
+	{
+		if (instance == null) {
+			instance = this;
+		} else {
+			Debug.LogError("Only one instance of Inventory is allowed.");
 		}
 
-		for (int i= 0; i < slotsX * slotsY; i++) {
-			slots.Add(new Item());
-			inventory.Add(new Item());
+		inventory = new List<ItemStack>(inventorySize);
+		while (inventory.Count < inventorySize) {
+			inventory.Add(null);
 		}
 
-		AddItem(0);
-		AddItem(1);
-		AddItem(2);
-		AddItem(0);
-		AddItem(2);
-		AddItem(2);
-		AddItem(2);
+		readonlyInventory = inventory.AsReadOnly();
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	public ItemStack AddStack(ItemStack stack)
 	{
-		if (Input.GetButtonDown("Inventory")) {
-			showInventory = !showInventory;
-		}
-	}
-
-	void OnGUI()
-	{
-		GUI.skin = skin;
-		toolTip = "";
-		if (showInventory) {
-			DrawInventory();
-
-			if (showToolTip) {
-				DrawTooltip();
-			}
+		if (stack.num < 1 || stack.item == null) {
+			Debug.LogError("Trying to add empty stack to inventory.");
 		}
 
-		if (draggingItem) {
-			drawTextureAndCount(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64),
-			                    draggedItem);
-		}
-	}
-
-
-
-	void DrawInventory()
-	{
-		Event currentEvent = Event.current;
-		int i = 0;
-		for (int y = 0; y < slotsY; y++) {
-			for (int x = 0; x < slotsX; x++) {
-				Rect slotRect = new Rect(Screen.width / 2 - slotsX / 2 * 70 + x * 70,
-				                         0.85f * Screen.height + y * 70, 64, 64);
-
-				slots[i] = inventory[i];
-				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
-				if (slots[i].itemName != null) {
-					drawTextureAndCount(slotRect, slots[i]);
-					if (slotRect.Contains(currentEvent.mousePosition)) {
-						if (currentEvent.button == 0 && currentEvent.type == EventType.mouseDown && !draggingItem) {
-							draggingItem = true;
-							prevIndex = i;
-							draggedItem = slots[i];
-							inventory[i] = new Item();
-						}
-
-						if (currentEvent.isMouse && currentEvent.type == EventType.mouseUp && draggingItem) {
-							inventory[prevIndex] = inventory[i];
-							inventory[i] = draggedItem;
-							draggingItem = false;
-							draggedItem = null;
-						}
-
-						if (!draggingItem) {
-							toolTip = CreateTooltip(slots[i]);
-							showToolTip = true;
-						}
-
-						if (currentEvent.isMouse && currentEvent.type == EventType.mouseDown
-						    && currentEvent.button == 1
-						    && !draggingItem)
-						{
-							if (slots[i].itemType == Item.ItemType.Consumable) {
-								UseConsumable(slots[i], i);
-							}
-						}
-					}
-				} else {
-					if (slotRect.Contains(currentEvent.mousePosition)) {
-						if (currentEvent.isMouse && currentEvent.type == EventType.mouseDown && draggingItem) {
-							inventory[i] = draggedItem;
-							draggingItem = false;
-							draggedItem = null;
-						}
-					}
+		//first run 
+		foreach(ItemStack st in inventory) {
+			if (st != null && st.item.itemID == stack.item.itemID) {
+				while (st.num < st.item.itemMaxStack && stack.num > 0) {
+					stack.num--;
+					st.num++;
 				}
+			}
+		}
 
-				if (toolTip == "") {
-					showToolTip = false;
+		if (stack.num == 0) {
+			return null;
+		}
+
+		int stackSplitNum = stack.num / (stack.item.itemMaxStack);
+		Debug.Log("stackSplitNum:" + stackSplitNum);
+
+		for (int i = 0; i < stackSplitNum; i++) {
+			for (int j = 0; j < inventory.Count && (stack.num > stack.item.itemMaxStack); j++) {
+				if (inventory[j] == null) {
+					inventory[j] = ItemPrefabsDefinition.StackClone(stack.item.itemID, stack.item.itemMaxStack);
+					stack.num -= stack.item.itemMaxStack;
 				}
-
-				i++;
-			}
-		}
-	}
-
-	// Add item:
-	// 1. If not in itemDatabase, just return error.
-	// 2. If current inventory has item with given id and count is not over maxCount, just add count by 1.
-	// 3. Otherwise, find a new empty inventory slot to put the item.
-	public bool AddItem(int id)
-	{
-		Item resultItem = database.items.Find(
-			delegate(Item item) {
-				return item.itemID == id;
-			}
-		);
-
-		if (resultItem == null) {
-			Debug.Log("Fail to find item with given id.");
-			return false;
-		}
-
-		for (int i = 0; i < inventory.Count; i++) {
-			if (inventory[i].itemID == id && inventory[i].itemCount < inventory[i].itemMaxCount) {
-				inventory[i].itemCount++;
-				return true;
 			}
 		}
 
 		for (int i = 0; i < inventory.Count; i++) {
-			if (inventory[i].itemName == null) {
-				inventory[i] = new Item(resultItem);
-				inventory[i].itemCount = 1;
-				return true;
+			if (inventory[i] == null) {
+				inventory[i] = stack;
+				return null;
 			}
 		}
 
-		// No place to hold the item, return false.
-		return false;
+		//return what's left
+		return stack;
 	}
 
-	public bool InventoryContains(int id)
+	public ItemStack RemoveOne(int pos)
 	{
-		for (int i = 0; i < inventory.Count; i++) {
-			if (inventory[i].itemName != null && inventory[i].itemID == id) {
-				return true;
-			}
+		ItemStack stack = inventory[pos];
+		if (stack == null) {
+			return null;		
 		}
 
-		return false;
-	}
-
-	private void SaveInventory()
-	{
-		for (int i = 0; i < inventory.Count; i++) {
-			PlayerPrefs.SetInt("Inventory " + i, inventory[i].itemID);
-			PlayerPrefs.SetInt("Count" + i, inventory[i].itemCount);
+		stack.num--; //take one
+		ItemStack newSt = new ItemStack() {num = 1, item = stack.item};
+		if (stack.num == 0) {
+			inventory[pos] = null;
 		}
+
+		return newSt;
 	}
 
-	private void LoadInventory()
+	public ItemStack Remove(int pos)
 	{
-		for (int i = 0; i < inventory.Count; i++) {
-			if (PlayerPrefs.GetInt("Inventory " + i) >= 0) {
-				inventory[i] = database.items[PlayerPrefs.GetInt("Inventory " + i)];
-				inventory[i].itemCount = PlayerPrefs.GetInt("Count" + i);
-			} else {
-				inventory[i] = new Item();
-			}
-		}
+		ItemStack stack = inventory[pos];
+		inventory[pos] = null;
+		return stack;
 	}
 
-	private void drawTextureAndCount(Rect rect, Item item)
+	public void UseConsumable(Item item, int slot)
 	{
-		GUI.DrawTexture(rect, item.itemIcon);
-		GUI.Label(new Rect(rect.x + 50, rect.y + 45, 30, 30), item.itemCount.ToString());
-	}
-
-	private void DrawTooltip()
-	{
-		float dynamicHeight = skin.box.CalcHeight(new GUIContent(toolTip), 200);
-		GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y - 100, 200, dynamicHeight),
-		        toolTip, skin.GetStyle("Box"));
-	}
-
-	private string CreateTooltip(Item item)
-	{
-		toolTip = "";
-		//we can change text color depending on item rare degree
-		toolTip = "<color=#ffffff>" + item.itemName + "</color>\n\n<color=#ffffff>" + item.itemDesc + "</color>";
-		return toolTip;
-	}
-
-	private void UseConsumable(Item item, int slot)
-	{
-		item.itemCount--;
-		if (item.itemCount == 0) {
-			inventory[slot] = new Item();
-		}
+		RemoveOne(slot);
 
 		switch(item.itemID) {
 		case 0:
@@ -239,5 +136,21 @@ public class Inventory : MonoBehaviour {
 		default:
 			break;
 		}
+	}
+
+	public bool InventoryContains(int id)
+	{
+		//TODO
+		return false;
+	}
+
+	private void SaveInventory()
+	{
+		//TODO
+	}
+
+	private void LoadInventory()
+	{
+		//TODO
 	}
 }
