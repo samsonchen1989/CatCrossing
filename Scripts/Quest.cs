@@ -21,13 +21,36 @@ public class Quest
 
 	List<QuestGoal> questGoalList;
 	List<ItemStack> rewardList;
+
+	public Quest(string title, int id, QuestProgress progress, string description, string hint, int nextQuestId,
+	             List<QuestGoal> questGoalList, List<ItemStack> rewardList)
+	{
+		this.title = title;
+		this.id = id;
+		this.progress = progress;
+		this.description = description;
+		this.hint = hint;
+		this.nextQuestId = nextQuestId;
+
+		this.questGoalList = questGoalList;
+		this.rewardList = rewardList;
+	}
 }
 
 [System.Serializable]
 public class QuestGoal
 {
-	int itemID;
-	int currentNumber;
-	int neededNumber;
-	bool complete;
+	public int itemID;
+	public int currentNumber;
+	public int neededNumber;
+	public bool complete;
+
+	public QuestGoal(int itemID, int neededNumber, int currentNumber = 0, bool complete = false)
+	{
+		this.itemID = itemID;
+		this.neededNumber = neededNumber;
+
+		this.currentNumber = currentNumber;
+		this.complete = complete;
+	}
 }

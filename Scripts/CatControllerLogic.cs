@@ -25,7 +25,7 @@ public class CatControllerLogic : MonoBehaviour {
 
 	private CharacterController controller;
 	private float speed = 6.0f;
-	private float jumpSpeed = 8.0f;
+	private float jumpSpeed = 15.0f;
 	private float gravity = 60.0f;
 	private bool canJump = true;
 
@@ -60,6 +60,8 @@ public class CatControllerLogic : MonoBehaviour {
 		if (gameCamTransform == null) {
 			Debug.LogError("Couldn't find game main camera");
 		}
+
+		controller = GetComponent<CharacterController>();
 	}
 
 	// Update is called once per frame
@@ -86,17 +88,22 @@ public class CatControllerLogic : MonoBehaviour {
 		float rotationAmount = leftX * turnSpeed;
 		curDirection = (curDirection + rotationAmount) % 360;
 
-		controller = GetComponent<CharacterController>();
-
 		transform.rotation = Quaternion.Euler(0, curDirection, 0);
 		
 		moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
 		moveDirection = transform.TransformDirection(moveDirection);
 		moveDirection *= speed;
 
-		if (Input.GetButton("Jump")) {
+		if (Input.GetButton("Jump") && canJump) {
 			moveDirection.y = jumpSpeed;
 			canJump = false;
+		}
+
+		Ray ray = new Ray(transform.position, -1 * Vector3.up);
+		if (Physics.Raycast(ray, out hit)) {
+			if (hit.distance <= 0.01) {
+				canJump = true;
+			}
 		}
 
 		moveDirection.y -= gravity * Time.deltaTime;
