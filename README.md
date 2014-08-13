@@ -1,24 +1,19 @@
 Catcrossing
-===========
+---------------
 
 A 3D survival game made by unity3d, scripts part.
 
-Goals:
+**Goals:**
 
-1. Player controller.
-(Done)
-2. Third person camera.
-(Done)
-http://catcrossing.net/wordpress/?p=175
-3. Day night cycle system.
-(Done)
-4. Player Status UI, life and hungry bar.
-(Done)
-5. Simple Terrian environment.
-(Done)
-6. Item and Inventory system.
-(Done, 14.07.29)
+1. ~~Player controller.~~
+2. ~~Third person camera.~~
+[A How-to Blog](http://catcrossing.net/wordpress/?p=175)
+3. ~~Day night cycle system.~~
+4. ~~Player Status UI, life and hungry bar.~~
+5. ~~Simple Terrian environment.~~
+6. ~~Item and Inventory system.~~
 7. Dialog & Quest system.
 8. Game State Control, start, pause, game over.
 9. Mini map.
-10. Realtime Combat system, maybe...
+10. Realtime Combat system.
+11. Online Game, Pomelo Server Maybe.
