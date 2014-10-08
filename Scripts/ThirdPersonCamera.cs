@@ -6,20 +6,15 @@ public class ThirdPersonCamera : MonoBehaviour
     #region Variables (private)
 
     [SerializeField]
-    private float
-        distanceAway = 3.0f;
+    private float distanceAway = 3.0f;
     [SerializeField]
-    private float
-        distanceUp = 2.0f;
+    private float distanceUp = 2.0f;
     [SerializeField]
-    private float
-        yOffset = 1.0f;
+    private float yOffset = 1.0f;
     [SerializeField]
-    private float
-        cameraZoomMax = 25.0f;
+    private float cameraZoomMax = 25.0f;
     [SerializeField]
-    private float
-        cameraZoomMin = 4.0f;
+    private float cameraZoomMin = 4.0f;
 
     // Private global only
     private Transform playerTransform;
@@ -29,8 +24,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 velocityCamSmooth = Vector3.zero;
     [SerializeField]
     //Set this value carefully, small value like 0.1 will cause camera shaking.
-    private float
-        camSmoothDampTime = 0.0f;
+    private float camSmoothDampTime = 0.0f;
     private bool isRotating = false;
     private float rotateXSpeed = 5.0f;
     private float rotateYSpeed = 5.0f;

@@ -32,14 +32,6 @@ public class InventoryUI : MonoBehaviour
             slotsY = inv.InventorySize / slotsX;
             slotsRemain = inv.InventorySize % slotsX;
         }
-
-        // just for UI test
-        /*
-        ItemStack rest = inv.AddStack(ItemPrefabsDefinition.StackClone(2, 3));
-        inv.AddStack(ItemPrefabsDefinition.StackClone(0, 25));
-        inv.AddStack(ItemPrefabsDefinition.StackClone(1, 10));
-        if (rest != null) Debug.Log("Couldn't fit " + rest.num + " x " + rest.item.itemName);
-        */
     }
 
     // Update is called once per frame

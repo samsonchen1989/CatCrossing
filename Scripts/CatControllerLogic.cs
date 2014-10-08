@@ -13,14 +13,11 @@ public class CatControllerLogic : MonoBehaviour
     #region variables (private)
 
     [SerializeField]
-    private Animator
-        animator;
+    private Animator animator;
     [SerializeField]
-    private Rigidbody
-        playerBody;
+    private Rigidbody playerBody;
     [SerializeField]
-    private Transform
-        gameCamTransform;
+    private Transform gameCamTransform;
 
     // Private global only
     private float curDirection = 0.0f;
