@@ -2,40 +2,40 @@
 using System.Collections;
 
 public class DayNightCycle : MonoBehaviour {
-	private const float DAY_HOUR = 24;
+	private const float DayHour = 24.0f;
 	private const float MorningSliderPercent = 0.35f;
 
 	public float slider = MorningSliderPercent;
 	public float slider2;
-	public float Hour;
-	public int Days = 0;
+	public float hour;
+	public int totalDays = 0;
 
 	public float speed = 600.0f;
 
 	public Light sun;
 
-	public Color NightFogColor;
-	public Color DuskFogColor;
-	public Color MorningFogColor;
-	public Color MiddayFogColor;
+	public Color nightFogColor;
+	public Color duskFogColor;
+	public Color morningFogColor;
+	public Color middayFogColor;
 
-	public Color NightAmbientLight;
-	public Color DuskAmbientLight;
-	public Color MorningAmbientLight;
-	public Color MiddayAmbientLight;
+	public Color nightAmbientLight;
+	public Color duskAmbientLight;
+	public Color morningAmbientLight;
+	public Color middayAmbientLight;
 
-	public Color NightTint;
-	public Color DuskTint;
-	public Color MorningTint;
-	public Color MiddayTint;
+	public Color nightTint;
+	public Color duskTint;
+	public Color morningTint;
+	public Color middayTint;
 
-	public Color SunNight;
-	public Color SunDay;
+	public Color sunNight;
+	public Color sunDay;
 
-	public Material SkyBoxMaterial1;
-	public Material SkyBoxMaterial2;
+	public Material skyBoxMaterial1;
+	public Material skyBoxMaterial2;
 
-	private float Tod;
+	private float timeOfDay;
 	private bool dayChanged = false;
 
 	//Draw on GUI
@@ -48,12 +48,12 @@ public class DayNightCycle : MonoBehaviour {
 
 		slider = GUI.HorizontalSlider(new Rect(20, 20, 200, 30), slider, 0, 1.0f);
 
-		Hour = slider * DAY_HOUR;
-		Tod = slider2 * DAY_HOUR;
+		hour = slider * DayHour;
+        timeOfDay = slider2 * DayHour;
 
 		sun.transform.localEulerAngles = new Vector3((slider * 360) - 90, 0, 0);
 		slider = slider + Time.deltaTime / speed;
-		sun.color = Color.Lerp(SunNight, SunDay, slider * 2);
+		sun.color = Color.Lerp(sunNight, sunDay, slider * 2);
 
 		if (slider < 0.5f) {
 			slider2 = slider;
@@ -62,48 +62,48 @@ public class DayNightCycle : MonoBehaviour {
 		}
 
 		if (slider >= MorningSliderPercent && dayChanged) {
-			Days += 1;
+            totalDays += 1;
 			dayChanged = false;
 		}
 
 		sun.intensity = (slider2 - 0.2f) * 1.7f;
 
-		if(Tod < 4) {
+        if (timeOfDay < 4) {
 			//it is Night
-			RenderSettings.skybox = SkyBoxMaterial1;
+			RenderSettings.skybox = skyBoxMaterial1;
 			RenderSettings.skybox.SetFloat("_Blend", 0);
-			SkyBoxMaterial1.SetColor ("_Tint", NightTint);
-			RenderSettings.ambientLight = NightAmbientLight;
-			RenderSettings.fogColor = NightFogColor;
+			skyBoxMaterial1.SetColor("_Tint", nightTint);
+			RenderSettings.ambientLight = nightAmbientLight;
+			RenderSettings.fogColor = nightFogColor;
 		}
 
-		if (Tod > 4 && Tod < 6) {
-			RenderSettings.skybox = SkyBoxMaterial1;
+        if (timeOfDay > 4 && timeOfDay < 6) {
+			RenderSettings.skybox = skyBoxMaterial1;
 			RenderSettings.skybox.SetFloat("_Blend", 0);
-			RenderSettings.skybox.SetFloat("_Blend", (Tod / 2) - 2);
-			SkyBoxMaterial1.SetColor ("_Tint", Color.Lerp (NightTint, DuskTint, (Tod / 2) - 2));
-			RenderSettings.ambientLight = Color.Lerp (NightAmbientLight, DuskAmbientLight, (Tod / 2) - 2);
-			RenderSettings.fogColor = Color.Lerp (NightFogColor,DuskFogColor, (Tod / 2) - 2);
+            RenderSettings.skybox.SetFloat("_Blend", (timeOfDay / 2) - 2);
+            skyBoxMaterial1.SetColor("_Tint", Color.Lerp (nightTint, duskTint, (timeOfDay / 2) - 2));
+            RenderSettings.ambientLight = Color.Lerp (nightAmbientLight, duskAmbientLight, (timeOfDay / 2) - 2);
+            RenderSettings.fogColor = Color.Lerp (nightFogColor, duskFogColor, (timeOfDay / 2) - 2);
 			//it is Dusk
 		}
 
-		if (Tod > 6 && Tod < 8) {
-			RenderSettings.skybox = SkyBoxMaterial2;
+        if (timeOfDay > 6 && timeOfDay < 8) {
+			RenderSettings.skybox = skyBoxMaterial2;
 			RenderSettings.skybox.SetFloat("_Blend", 0);
-			RenderSettings.skybox.SetFloat("_Blend", (Tod / 2) - 3);
-			SkyBoxMaterial2.SetColor ("_Tint", Color.Lerp(DuskTint, MorningTint, (Tod / 2) - 3));
-			RenderSettings.ambientLight = Color.Lerp(DuskAmbientLight, MorningAmbientLight, (Tod / 2) - 3);
-			RenderSettings.fogColor = Color.Lerp (DuskFogColor,MorningFogColor, (Tod / 2) - 3);
+            RenderSettings.skybox.SetFloat("_Blend", (timeOfDay / 2) - 3);
+            skyBoxMaterial2.SetColor("_Tint", Color.Lerp(duskTint, morningTint, (timeOfDay / 2) - 3));
+            RenderSettings.ambientLight = Color.Lerp(duskAmbientLight, morningAmbientLight, (timeOfDay / 2) - 3);
+            RenderSettings.fogColor = Color.Lerp (duskFogColor, morningFogColor, (timeOfDay / 2) - 3);
 			//it is Morning
 		}
 
-		if(Tod > 8 && Tod < 10) {
-			RenderSettings.ambientLight = MiddayAmbientLight;
-			RenderSettings.skybox = SkyBoxMaterial2;
+        if (timeOfDay > 8 && timeOfDay < 10) {
+			RenderSettings.ambientLight = middayAmbientLight;
+			RenderSettings.skybox = skyBoxMaterial2;
 			RenderSettings.skybox.SetFloat("_Blend", 1);
-			SkyBoxMaterial2.SetColor ("_Tint", Color.Lerp(MorningTint,MiddayTint, (Tod / 2) - 4));
-			RenderSettings.ambientLight = Color.Lerp (MorningAmbientLight, MiddayAmbientLight, (Tod / 2) - 4);
-			RenderSettings.fogColor = Color.Lerp (MorningFogColor, MiddayFogColor, (Tod / 2) - 4);
+            skyBoxMaterial2.SetColor("_Tint", Color.Lerp(morningTint, middayTint, (timeOfDay / 2) - 4));
+            RenderSettings.ambientLight = Color.Lerp(morningAmbientLight, middayAmbientLight, (timeOfDay / 2) - 4);
+            RenderSettings.fogColor = Color.Lerp(morningFogColor, middayFogColor, (timeOfDay / 2) - 4);
 		}
 	}
 }

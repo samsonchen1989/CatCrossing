@@ -25,6 +25,8 @@ public class ItemPrefabsDefinition : MonoBehaviour {
 		} else {
 			Debug.LogError("Just one ItemPrefabsDefinition allowed.");
 		}
+
+        ItemDefinitionInit();
 	}
 
 	#endregion
@@ -56,12 +58,19 @@ public class ItemPrefabsDefinition : MonoBehaviour {
 
 	public static Item ItemClone(int id)
 	{
-		return instance.ItemDictionary[id].Clone();
+		return instance.ItemDictionary[id].ShallowClone();
 	}
 
 	public static ItemStack StackClone(int itemID, int size)
 	{
 		return new ItemStack() { num = size, item = ItemClone(itemID) };
 	}
+
+    void ItemDefinitionInit()
+    {
+        itemDic.Add(0, new Item("Item_Grass", 0, "Cat eats grass sometimes.", Item.ItemType.Consumable, 20));
+        itemDic.Add(1, new Item("Item_Branch", 1, "Father of fire.", Item.ItemType.Consumable, 10));
+        itemDic.Add(2, new Item("Item_Bottle_Empty", 2, "Fill it full!", Item.ItemType.Consumable, 2));
+    }
 
 }

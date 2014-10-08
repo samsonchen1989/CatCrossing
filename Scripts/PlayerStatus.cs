@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerStatus : MonoBehaviour {
 
 	public enum HealthState {
-		Healthy = 0,
+		Healthy,
 		Uncomfortable,
 		Sick
 	};
@@ -18,24 +18,26 @@ public class PlayerStatus : MonoBehaviour {
 	private float dayNightSpeed = 0;
 	private DayNightCycle timeCycle;
 	
-	private const float MAX_NUM = 100.0f;
-	private const float MAX_HUNGRY_DAY = 3.0f;
+	private const float MaxNum = 100.0f;
+	private const float MaxHungryDay = 3.0f;
 	// Use this for initialization
-	void Start () {
-		life = MAX_NUM;
-		hungry = MAX_NUM;
-		health = MAX_NUM;
+	void Start()
+    {
+        life = MaxNum;
+        hungry = MaxNum;
+        health = MaxNum;
 
 		timeCycle = GameObject.Find("TOD").GetComponent<DayNightCycle>();
 		if (timeCycle == null) {
 			Debug.LogError("Fail to find TOD's DayNightCycle component");
 		}
 
-		dayNightSpeed = MAX_NUM * Time.deltaTime / (timeCycle.speed * (MAX_HUNGRY_DAY - 1));
+        dayNightSpeed = MaxNum * Time.deltaTime / (timeCycle.speed * (MaxHungryDay - 1));
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+    {
 		hungry = hungry - dayNightSpeed;
 		
 		if (hungry <= 0) {
@@ -52,22 +54,22 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	#region public method
-	public float getLifePercent()
+	public float GetLifePercent()
 	{
-		return (life / MAX_NUM);
+        return (life / MaxNum);
 	}
 	
-	public float getHungryPercent()
+	public float GetHungryPercent()
 	{
-		return (hungry / MAX_NUM);
+        return (hungry / MaxNum);
 	}
 	
-	public float getHealthPercent()
+	public float GetHealthPercent()
 	{
-		return (health / MAX_NUM);
+        return (health / MaxNum);
 	}
 	
-	public HealthState getHealthState()
+	public HealthState GetHealthState()
 	{
 		HealthState stat;
 		if (health < 20.0f) {

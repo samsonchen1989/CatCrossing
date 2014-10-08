@@ -11,6 +11,9 @@ public class Quest
 	public string hint;
 	public int nextQuestId;
 
+	// Npc from who to get this quest
+	public int ownerId;
+
 	public enum QuestProgress {
 		NotEligible,
 		Eligible,
@@ -19,8 +22,8 @@ public class Quest
 		Done
 	}
 
-	List<QuestGoal> questGoalList;
-	List<ItemStack> rewardList;
+	public List<QuestGoal> questGoalList;
+	public List<ItemStack> rewardList;
 
 	public Quest(string title, int id, QuestProgress progress, string description, string hint, int nextQuestId,
 	             List<QuestGoal> questGoalList, List<ItemStack> rewardList)
@@ -35,22 +38,9 @@ public class Quest
 		this.questGoalList = questGoalList;
 		this.rewardList = rewardList;
 	}
-}
 
-[System.Serializable]
-public class QuestGoal
-{
-	public int itemID;
-	public int currentNumber;
-	public int neededNumber;
-	public bool complete;
-
-	public QuestGoal(int itemID, int neededNumber, int currentNumber = 0, bool complete = false)
+	public Quest ShallowClone()
 	{
-		this.itemID = itemID;
-		this.neededNumber = neededNumber;
-
-		this.currentNumber = currentNumber;
-		this.complete = complete;
+		return (Quest)this.MemberwiseClone();
 	}
 }

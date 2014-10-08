@@ -5,7 +5,7 @@ public class CatControllerLogic : MonoBehaviour {
 	enum CatState {
 		Idle,
 		Jump,
-		Running
+		Run
 	}	
 
 	#region variables (private)
@@ -36,14 +36,19 @@ public class CatControllerLogic : MonoBehaviour {
 	private CatState state = CatState.Idle;
 	private RaycastHit hit;
 
-	private const float inputThreshold = 0.01f;	
-	private const float groundDrag = 5.0f;
-	private const float turnSpeed = 2.0f;
+	#endregion
+
+	#region const value
+
+	const float InputThreshold = 0.01f;	
+	const float GroundDrag = 5.0f;
+	const float TurnSpeed = 2.0f;
 
 	#endregion
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+    {
 		animator = GetComponent<Animator>();
 		gameCamTransform = GameObject.FindWithTag("MainCamera").transform;
 
@@ -65,7 +70,8 @@ public class CatControllerLogic : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+    {
 		if (animator) {
 			//pull values from controller/keyboard, A/D to rotate, W/S to move
 			leftX = Input.GetAxis("Horizontal");
@@ -85,7 +91,7 @@ public class CatControllerLogic : MonoBehaviour {
 			curDirection = gameCamTransform.rotation.eulerAngles.y;
 		}
 		
-		float rotationAmount = leftX * turnSpeed;
+		float rotationAmount = leftX * TurnSpeed;
 		curDirection = (curDirection + rotationAmount) % 360;
 
 		transform.rotation = Quaternion.Euler(0, curDirection, 0);
@@ -113,7 +119,8 @@ public class CatControllerLogic : MonoBehaviour {
 	/* If you prefer to use Rigidbody and Capsule Collider to control the player,
 	 * you can use code below, add force to push player.
 	// Update is called once per frame
-	void Update () {
+	void Update()
+    {
 		if (animator) {
 			//pull values from controller/keyboard, A/D to rotate, W/S to move
 			leftX = Input.GetAxis("Horizontal");
@@ -134,7 +141,7 @@ public class CatControllerLogic : MonoBehaviour {
 			//Debug.Log("curDirection:" + curDirection);
 		}
 
-		float rotationAmount = leftX * turnSpeed;
+		float rotationAmount = leftX * TurnSpeed;
 		curDirection = (curDirection + rotationAmount) % 360;
 		
 		Ray ray = new Ray(transform.position, -1 * Vector3.up);
@@ -166,7 +173,7 @@ public class CatControllerLogic : MonoBehaviour {
 		if (onGround) {
 			float moveAxis = Input.GetAxis("Vertical");
 			Vector3 movement = moveAxis * playerBody.transform.forward;
-			if (movement.magnitude > inputThreshold && moveAxis > 0) {
+			if (movement.magnitude > InputThreshold && moveAxis > 0) {
 				playerBody.AddForce(movement.normalized * 5.0f, ForceMode.VelocityChange);
 				Debug.Log("Add force");
 				state = CatState.Running;

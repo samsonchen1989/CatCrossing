@@ -27,7 +27,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 	private bool isRotating = false;
 	private float rotateXSpeed = 5.0f;
-	private float rotateYSpeed = 3.0f;
+	private float rotateYSpeed = 5.0f;
 
 	private Vector3 toCamera;
 	private Quaternion cameraRotate;
@@ -44,7 +44,8 @@ public class ThirdPersonCamera : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update() {
+	void Update()
+	{
 		if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
 			isRotating = true;
 		} else {
@@ -80,13 +81,14 @@ public class ThirdPersonCamera : MonoBehaviour {
 	
 	#region Methods
 	
-	private void smoothPosition(Vector3 fromPos, Vector3 toPos)
+	private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
 	{
 		//Making a smooth transition between camera's current position and the position it wants to be in
 		this.transform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
 	}
 
-	private float ClampAngle (float angle, float min, float max) {
+	private float ClampAngle(float angle, float min, float max)
+    {
 		if (angle < -360) {
 			angle += 360;
 		}

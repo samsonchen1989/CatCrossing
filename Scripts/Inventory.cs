@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
+public delegate void InventoryChangedHandler();
+
 public class Inventory : MonoBehaviour {
 
 	#region Sigleton Code
@@ -20,8 +22,11 @@ public class Inventory : MonoBehaviour {
 	}
 
 	#endregion
+    
+    //Inventory changed event
+    public event InventoryChangedHandler InventoryChanged = delegate {};
 
-	public int inventorySize = 14;
+	public int inventorySize = 15;
 	public int InventorySize {
 		get {
 			return inventorySize;
@@ -29,6 +34,8 @@ public class Inventory : MonoBehaviour {
 	}
 
 	public List<ItemStack> inventory;
+    public ItemStack swapItemStack;
+    public int swapSlotId;
 	
 	public ReadOnlyCollection<ItemStack> readonlyInventory;
 	public ReadOnlyCollection<ItemStack> InventoryStack {
@@ -51,15 +58,19 @@ public class Inventory : MonoBehaviour {
 		}
 
 		readonlyInventory = inventory.AsReadOnly();
+        
+        swapItemStack = null;
+        swapSlotId = -1;
 	}
 	
 	public ItemStack AddStack(ItemStack stack)
 	{
 		if (stack.num < 1 || stack.item == null) {
 			Debug.LogError("Trying to add empty stack to inventory.");
+            return null;
 		}
 
-		//first run 
+		// First run, add to the same item stack in inventory
 		foreach(ItemStack st in inventory) {
 			if (st != null && st.item.itemID == stack.item.itemID) {
 				while (st.num < st.item.itemMaxStack && stack.num > 0) {
@@ -69,12 +80,13 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 
+        // Add to existed item stack complete, return null(nothing left)
 		if (stack.num == 0) {
+            InventoryChanged();
 			return null;
 		}
 
-		int stackSplitNum = stack.num / (stack.item.itemMaxStack);
-		Debug.Log("stackSplitNum:" + stackSplitNum);
+		int stackSplitNum = stack.num / (stack.item.itemMaxStack);;
 
 		for (int i = 0; i < stackSplitNum; i++) {
 			for (int j = 0; j < inventory.Count && (stack.num > stack.item.itemMaxStack); j++) {
@@ -85,13 +97,16 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 
+        // add item left to the first empty inventory slot
 		for (int i = 0; i < inventory.Count; i++) {
 			if (inventory[i] == null) {
 				inventory[i] = stack;
+                InventoryChanged();
 				return null;
 			}
 		}
 
+        InventoryChanged();
 		//return what's left
 		return stack;
 	}
@@ -109,6 +124,7 @@ public class Inventory : MonoBehaviour {
 			inventory[pos] = null;
 		}
 
+        InventoryChanged();
 		return newSt;
 	}
 
@@ -116,6 +132,7 @@ public class Inventory : MonoBehaviour {
 	{
 		ItemStack stack = inventory[pos];
 		inventory[pos] = null;
+        InventoryChanged();
 		return stack;
 	}
 
@@ -137,6 +154,23 @@ public class Inventory : MonoBehaviour {
 			break;
 		}
 	}
+
+    public void ReplaceSwapItemStack(int targetPos)
+    {
+        if (swapSlotId < 0 || swapSlotId >= inventorySize || targetPos < 0 || targetPos >= inventorySize) {
+            Debug.Log("Position out of inventory range, swap fail.");
+            return;
+        }
+
+        if (swapItemStack != null && swapItemStack.num > 0) {
+            inventory[swapSlotId] = inventory[targetPos];
+            inventory[targetPos] = swapItemStack;
+            swapItemStack = null;
+            swapSlotId = -1;
+        }
+        
+        InventoryChanged();
+    }
 
 	public bool InventoryContains(int id)
 	{

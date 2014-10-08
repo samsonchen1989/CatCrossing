@@ -15,12 +15,14 @@ public class NPC_Dialog : MonoBehaviour {
 	private Vector3 screenPosition;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+    {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+    {
 		screenPosition = Camera.main.WorldToScreenPoint(this.transform.position);
 
 		RaycastHit hitInfo = new RaycastHit();

@@ -27,7 +27,8 @@ public class PlayerStatusUI : MonoBehaviour {
 	private float sizeY;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+    {
 		playerStatus = this.GetComponent<PlayerStatus>();
 		if (playerStatus == null) {
 			Debug.LogError("Fail to get PlayerStatus Component.");
@@ -41,7 +42,8 @@ public class PlayerStatusUI : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+    {
 		barDisplay = Time.time * 0.05f;
 	}
 
@@ -50,14 +52,14 @@ public class PlayerStatusUI : MonoBehaviour {
 		//draw the background
 		GUI.BeginGroup(new Rect(posX, posY, sizeX, sizeY));
 			GUI.Box(new Rect(0, 0, sizeX, sizeY), emptyHealthTex, emptyStyle);
-			GUI.BeginGroup(new Rect(0, 0, sizeX * playerStatus.getLifePercent(), sizeY));
+			GUI.BeginGroup(new Rect(0, 0, sizeX * playerStatus.GetLifePercent(), sizeY));
 				GUI.Box(new Rect(0, 0, sizeX, sizeY), fullHealthTex, fullStyle);
 			GUI.EndGroup();
 		GUI.EndGroup();
 
 		GUI.BeginGroup(new Rect(posX, posY * 1.6f, sizeX, sizeY));
 			GUI.Box(new Rect(0, 0, sizeX, sizeY), emptyHungryTex, emptyStyle);
-			GUI.BeginGroup(new Rect(0, 0, sizeX * playerStatus.getHungryPercent(), sizeY));
+			GUI.BeginGroup(new Rect(0, 0, sizeX * playerStatus.GetHungryPercent(), sizeY));
 				GUI.Box(new Rect(0, 0, sizeX, sizeY), fullHungryTex, fullStyle);
 			GUI.EndGroup();
 		GUI.EndGroup();	

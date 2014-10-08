@@ -36,10 +36,12 @@ public class InventoryUI : MonoBehaviour {
 		}
 
 		// just for UI test
+        /*
 		ItemStack rest = inv.AddStack(ItemPrefabsDefinition.StackClone(2, 3));
 		inv.AddStack(ItemPrefabsDefinition.StackClone(0, 25));
 		inv.AddStack(ItemPrefabsDefinition.StackClone(1, 10));
         if (rest != null) Debug.Log("Couldn't fit " + rest.num + " x " + rest.item.itemName);
+        */
 	}
 
 	// Update is called once per frame
@@ -63,7 +65,7 @@ public class InventoryUI : MonoBehaviour {
 		}
 
 		if (draggingItem) {
-			drawTextureAndCount(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64),
+			DrawTextureAndCount(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64),
 			                    draggedItemStack);
 		}
 	}
@@ -81,7 +83,7 @@ public class InventoryUI : MonoBehaviour {
 				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
 				if (currentStack != null) {
 					// draw item icon and stack count
-					drawTextureAndCount(slotRect, currentStack);
+					DrawTextureAndCount(slotRect, currentStack);
 
 					// item drag and drop
 					if (slotRect.Contains(currentEvent.mousePosition)) {
@@ -137,7 +139,7 @@ public class InventoryUI : MonoBehaviour {
 		}
 	}
 
-	private void drawTextureAndCount(Rect rect, ItemStack stack)
+	private void DrawTextureAndCount(Rect rect, ItemStack stack)
 	{
 		GUI.DrawTexture(rect, stack.item.itemIcon);
 		GUI.Label(new Rect(rect.x + 50, rect.y + 45, 30, 30), stack.num.ToString());

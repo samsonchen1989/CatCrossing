@@ -4,7 +4,7 @@ using System.Collections;
 public class InteractiveItem : MonoBehaviour {
 
 	public Texture2D mousePickTexture;
-	public float maxInteractDis = 3.6f;
+	const float MaxInteractDis = 3.6f;
 
 	// Use this for initialization
 	void Start ()
@@ -23,7 +23,7 @@ public class InteractiveItem : MonoBehaviour {
 				GameObject hitItem = hitInfo.transform.gameObject;
 				// Just check for right mouse button up action
 				if (hitItem && Input.GetMouseButtonUp(1)) {
-					if (hitInfo.distance < maxInteractDis) {
+                    if (hitInfo.distance < MaxInteractDis) {
 						Destroy(hitItem);
 					} else {
 						Debug.Log("too far");

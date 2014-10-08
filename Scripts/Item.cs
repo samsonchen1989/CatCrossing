@@ -37,7 +37,13 @@ public class Item
 		itemMaxStack = 99;
 	}
 
-	public Item(Item copyItem)
+	public Item(string name, int id, string desc, ItemType type, int maxCount)
+		: this(name, id, desc, type)
+	{
+		itemMaxStack = maxCount;
+	}
+
+	protected Item(Item copyItem)
 	{
 		itemName = copyItem.itemName;
 		itemID = copyItem.itemID;
@@ -48,16 +54,15 @@ public class Item
 		itemMaxStack = copyItem.itemMaxStack;
 	}
 
-	public Item(string name, int id, string desc, ItemType type, int maxCount)
-		: this(name, id, desc, type)
-	{	
-		itemMaxStack = maxCount;
-	}
-
-	public Item Clone()
+	public Item ShallowClone()
 	{
 		//return a shallow copy, as we don't need to clone the prefab and icon
 		return (Item)this.MemberwiseClone();
+	}
+
+	public Item DeepClone()
+	{
+		return new Item(this);
 	}
 }
 
