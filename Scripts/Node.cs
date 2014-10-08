@@ -13,7 +13,7 @@ namespace ConsoleApplication
         private NodeList<T> formerNodes;
         private NodeList<T> latterNodes;
 
-        public Node(T data) : this(data, null, null) { }
+        public Node(T data) : this(data, null, null){}
 
         public Node(T data, NodeList<T> former, NodeList<T> latter)
         {
@@ -22,38 +22,29 @@ namespace ConsoleApplication
             this.latterNodes = latter;
         }
 
-        public T Value
-        {
-            get
-            {
+        public T Value {
+            get {
                 return data;
             }
-            set
-            {
+            set {
                 data = value;
             }
         }
 
-        protected NodeList<T> FormerNodes
-        {
-            get
-            {
+        protected NodeList<T> FormerNodes {
+            get {
                 return formerNodes;
             }
-            set
-            {
+            set {
                 formerNodes = value;
             }
         }
 
-        protected NodeList<T> LatterNodes
-        {
-            get
-            {
+        protected NodeList<T> LatterNodes {
+            get {
                 return latterNodes;
             }
-            set
-            {
+            set {
                 latterNodes = value;
             }
         }
@@ -61,7 +52,9 @@ namespace ConsoleApplication
 
     public class NodeList<T> : Collection<Node<T>>
     {
-        public NodeList() : base() { }
+        public NodeList() : base()
+        {
+        }
 
         public NodeList(int initialSize)
         {

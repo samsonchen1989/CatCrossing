@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ItemSlot : MonoBehaviour {
+public class ItemSlot : MonoBehaviour
+{
 
     public UISprite background;
     public UISprite icon;
@@ -22,11 +23,12 @@ public class ItemSlot : MonoBehaviour {
         }
         
         inventory.InventoryChanged += OnInventoryChanged;
-	}
+    }
 
-	// Use this for initialization
-	void Start() {
-        slotItemStack = inventory.inventory[slotID];
+    // Use this for initialization
+    void Start()
+    {
+        slotItemStack = inventory.inventory [slotID];
         if (slotItemStack != null && icon != null && countLabel != null) {
             icon.enabled = true;
             icon.spriteName = slotItemStack.item.itemName;
@@ -35,18 +37,18 @@ public class ItemSlot : MonoBehaviour {
             countLabel.enabled = true;
             countLabel.text = slotItemStack.num.ToString();
         }
-	}
+    }
 	
     void OnClick()
     {
         if (inventory.swapItemStack == null) {
-			if (slotItemStack != null && slotItemStack.num > 0) {
-				inventory.swapItemStack = slotItemStack;
-				inventory.swapSlotId = slotID;
-				inventory.Remove(slotID);
-				ItemCursor.UpdateSprite();
-			}
-		} else {
+            if (slotItemStack != null && slotItemStack.num > 0) {
+                inventory.swapItemStack = slotItemStack;
+                inventory.swapSlotId = slotID;
+                inventory.Remove(slotID);
+                ItemCursor.UpdateSprite();
+            }
+        } else {
             inventory.ReplaceSwapItemStack(slotID);
             ItemCursor.UpdateSprite();
         }
@@ -62,13 +64,13 @@ public class ItemSlot : MonoBehaviour {
         if (slotItemStack != null && slotItemStack.num > 0) {
             UITooltip.ShowText(slotItemStack.item.itemDesc);
         }
-	}
+    }
     
     // If inventory changed, check and update current slotItemStack,
     // no need to update every frame.
     void OnInventoryChanged()
     {
-        slotItemStack = inventory.inventory[slotID];
+        slotItemStack = inventory.inventory [slotID];
         if (slotItemStack != null && slotItemStack.num > 0 && icon != null && countLabel != null) {
             icon.enabled = true;
             icon.spriteName = slotItemStack.item.itemName;
@@ -82,5 +84,5 @@ public class ItemSlot : MonoBehaviour {
             icon.enabled = false;
             countLabel.enabled = false;
         }
-	}
+    }
 }

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ItemCursor : MonoBehaviour {
+public class ItemCursor : MonoBehaviour
+{
 
     #region Inspector Assign component
 
@@ -14,8 +15,8 @@ public class ItemCursor : MonoBehaviour {
     #region Singleton code
 
     private static ItemCursor instance;
-    public static ItemCursor Instance
-    {
+
+    public static ItemCursor Instance {
         get {
             if (instance == null) {
                 Debug.LogError("Fail to get ItemCursor instance.");
@@ -44,8 +45,8 @@ public class ItemCursor : MonoBehaviour {
         instance = null;
     }
 
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
         itemSprite = this.GetComponent<UISprite>();
         if (itemSprite == null) {
@@ -70,10 +71,10 @@ public class ItemCursor : MonoBehaviour {
         if (uiCamera == null) {
             uiCamera = NGUITools.FindCameraForLayer(this.gameObject.layer);
         }
-	}
-	
-	// Update is called once per frame
-	void Update()
+    }
+    
+    // Update is called once per frame
+    void Update()
     {
         Vector3 mousePosition = Input.mousePosition;
         if (uiCamera != null) {
@@ -82,15 +83,14 @@ public class ItemCursor : MonoBehaviour {
             this.transform.position = uiCamera.ViewportToWorldPoint(mousePosition);
 
             // For pixel-perfect results
-            if (uiCamera.isOrthoGraphic)
-            {
+            if (uiCamera.isOrthoGraphic) {
                 Vector3 lp = this.transform.localPosition;
                 lp.x = Mathf.Round(lp.x);
                 lp.y = Mathf.Round(lp.y);
                 this.transform.localPosition = lp;
             }
         }
-	}
+    }
 
     public static void UpdateSprite()
     {
@@ -102,10 +102,10 @@ public class ItemCursor : MonoBehaviour {
         ItemStack swapItemStack = Inventory.Instance.swapItemStack;
         if (swapItemStack != null) {
             instance.itemSprite.atlas = instance.atlas;
-			instance.itemSprite.spriteName = swapItemStack.item.itemName;
-			instance.countLabel.text = swapItemStack.num.ToString();
-			instance.Update();
-		} else {
+            instance.itemSprite.spriteName = swapItemStack.item.itemName;
+            instance.countLabel.text = swapItemStack.num.ToString();
+            instance.Update();
+        } else {
             instance.itemSprite.atlas = null;
             instance.itemSprite.spriteName = null;
             instance.countLabel.text = null;

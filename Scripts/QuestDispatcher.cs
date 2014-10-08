@@ -8,9 +8,8 @@ public class QuestDispatcher : MonoBehaviour
 
     private static QuestDispatcher instance;
 
-    public static QuestDispatcher Instance
-    {
-        get{
+    public static QuestDispatcher Instance {
+        get {
             if (instance == null) {
                 Debug.LogError("Fail to find Instance of QuestDispatcher.");
             }
@@ -23,32 +22,31 @@ public class QuestDispatcher : MonoBehaviour
 
     int currentStep = 0;
 
-	QuestManager questManager;
+    QuestManager questManager;
 
     List<QuestNode> allQuests = new List<QuestNode>();
 
     //All npc are registered here themselves.
     Dictionary<int, NPC> npcList = new Dictionary<int, NPC>();
 
-    public Dictionary<int, NPC> NPCList
-    {
-        get{
+    public Dictionary<int, NPC> NPCList {
+        get {
             return npcList;
         }
     }
 
-	void Awake()
-	{
+    void Awake()
+    {
         if (instance == null) {
             instance = this;
         } else {
             Debug.LogError("Only one instance of QuestGiver is allowed!");
         }
 
-		questManager = QuestManager.Instance;
+        questManager = QuestManager.Instance;
 
         InitQuestDispatcher();
-	}
+    }
 
     void Start()
     {
@@ -73,16 +71,15 @@ public class QuestDispatcher : MonoBehaviour
 
     void DispatchSceneQuest()
     {
-        if (allQuests[currentStep] == null) {
+        if (allQuests [currentStep] == null) {
             Debug.Log("No quest in current step.");
             return;
         }
 
         //check if all former quests are complete
  
-        foreach (Quest quest in allQuests[currentStep].QuestNodeList)
-        {
-            npcList[quest.ownerId].AddQuest(quest);
+        foreach (Quest quest in allQuests[currentStep].QuestNodeList) {
+            npcList [quest.ownerId].AddQuest(quest);
         }
     }
 }

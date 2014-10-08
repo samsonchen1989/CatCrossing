@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ItemBackpack : MonoBehaviour {
+public class ItemBackpack : MonoBehaviour
+{
 
     public int maxRows;
     public int maxColumns;
-
     public int padding;
     public int spacing;
-
     public GameObject itemSlotPrefab;
 
-	// Use this for initialization
-	void Start() {
+    // Use this for initialization
+    void Start()
+    {
         if (itemSlotPrefab == null) {
             Debug.LogError("Fail to get item slot prefabs.");
             return;
@@ -44,10 +44,11 @@ public class ItemBackpack : MonoBehaviour {
                 count++;
             }
         }
-	}
-	
-	// Update is called once per frame
-	void Update() {
-	
-	}
+    }
+    
+    // Update is called once per frame
+    void Update()
+    {
+    
+    }
 }

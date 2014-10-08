@@ -2,14 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NPC : MonoBehaviour {
+public class NPC : MonoBehaviour
+{
 
     public int npcID;
     LinkedList<Quest> questList = new LinkedList<Quest>();
 
     public void AddQuest(Quest quest)
     {
-		if (quest == null) {
+        if (quest == null) {
             Debug.Log("Quest null, add fails.");
             return;
         }
@@ -27,13 +28,15 @@ public class NPC : MonoBehaviour {
         QuestDispatcher.Instance.NPCList.Add(npcID, this);
     }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
     
-	}
+    }
 	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
 	
-	}
+    }
 }
