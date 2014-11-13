@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NpcQuestItemUI : MonoBehaviour {
+public class NpcQuestItemUI : MonoBehaviour
+{
 
     #region Public gameObject to drop to in Inspector
 
@@ -12,11 +13,16 @@ public class NpcQuestItemUI : MonoBehaviour {
     #endregion
 
     public Quest npcQuest;
+    static string[] QuestIcon = {
+        "",
+        "exclamation_mark",
+        "question_mark_notdone",
+        "question_mark_done",
+        ""
+    };
 
-    static string[] QuestIcon = {"", "exclamation_mark", "question_mark_notdone", "question_mark_done", ""};
-
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
         if (questStateIcon == null || questTitle == null) {
             Debug.LogError("Fail to get NGUI component.");
@@ -30,9 +36,9 @@ public class NpcQuestItemUI : MonoBehaviour {
 
         Debug.Log("npc quest progress:" + npcQuest.progress.ToString());
 
-        questStateIcon.spriteName = QuestIcon[(int)npcQuest.progress];
+        questStateIcon.spriteName = QuestIcon [(int)npcQuest.progress];
         questTitle.text = npcQuest.title;
-	}
+    }
 
     void OnClick()
     {
@@ -41,10 +47,10 @@ public class NpcQuestItemUI : MonoBehaviour {
             questUI.DisplayQuestNewUI(npcQuest);
         }
     }
-	
-	// Update is called once per frame
-	void Update()
+    
+    // Update is called once per frame
+    void Update()
     {
-	
-	}
+    
+    }
 }

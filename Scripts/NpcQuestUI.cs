@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NpcQuestUI : MonoBehaviour {
+public class NpcQuestUI : MonoBehaviour
+{
 
     #region Public gameObject to drop to in Inspector
 
     public UILabel dialog;
     public GameObject questTable;
     public GameObject questItemPrefab;
-
     public GameObject questListPanel;
     public GameObject questNewPanel;
 
@@ -19,8 +19,8 @@ public class NpcQuestUI : MonoBehaviour {
     public List<GameObject> questItemList = new List<GameObject>();
     public Npc currentNpc;
 
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
         if (questTable == null || questItemPrefab == null) {
             Debug.LogError("Fail to get questTable or questItemPrefab.");
@@ -36,13 +36,13 @@ public class NpcQuestUI : MonoBehaviour {
             Debug.LogError("Fail to get quest panel");
             return;
         }
-	}
-	
-	// Update is called once per frame
-	void Update()
+    }
+    
+    // Update is called once per frame
+    void Update()
     {
 
-	}
+    }
 
     public void DisplayQuestListUI()
     {

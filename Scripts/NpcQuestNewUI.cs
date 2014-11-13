@@ -14,8 +14,8 @@ public class NpcQuestNewUI : MonoBehaviour {
 
     public Quest quest;
 
-	// Use this for initialization
-	void Start()
+    // Use this for initialization
+    void Start()
     {
         if (questDesc == null || questTarget == null || questReward == null || questTitle == null) {
             Debug.LogError("Fail to get new quest UI's label.");
@@ -27,13 +27,13 @@ public class NpcQuestNewUI : MonoBehaviour {
             questDesc.text = quest.description;
             questTarget.text = quest.hint;
         }
-	}
+    }
 	
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
     {
 	
-	}
+    }
 
     public void AcceptCurrentQuest()
     {
