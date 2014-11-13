@@ -59,13 +59,15 @@ public class CatControllerLogic : MonoBehaviour
             playerBody = GetComponent<Rigidbody>();
         }
 
-        playerBody.freezeRotation = true;
+        //playerBody.freezeRotation = true;
 
         if (gameCamTransform == null) {
             Debug.LogError("Couldn't find game main camera");
         }
 
         controller = GetComponent<CharacterController>();
+
+        curDirection = this.transform.rotation.eulerAngles.y;
     }
 
     // Update is called once per frame

@@ -22,14 +22,12 @@ public class QuestDispatcher : MonoBehaviour
 
     int currentStep = 0;
 
-    QuestManager questManager;
-
     List<QuestNode> allQuests = new List<QuestNode>();
 
     //All npc are registered here themselves.
-    Dictionary<int, NPC> npcList = new Dictionary<int, NPC>();
+    Dictionary<int, Npc> npcList = new Dictionary<int, Npc>();
 
-    public Dictionary<int, NPC> NPCList {
+    public Dictionary<int, Npc> NpcList {
         get {
             return npcList;
         }
@@ -42,8 +40,6 @@ public class QuestDispatcher : MonoBehaviour
         } else {
             Debug.LogError("Only one instance of QuestGiver is allowed!");
         }
-
-        questManager = QuestManager.Instance;
 
         InitQuestDispatcher();
     }
@@ -79,7 +75,7 @@ public class QuestDispatcher : MonoBehaviour
         //check if all former quests are complete
  
         foreach (Quest quest in allQuests[currentStep].QuestNodeList) {
-            npcList [quest.ownerId].AddQuest(quest);
+            npcList[quest.ownerId].AddQuest(quest);
         }
     }
 }

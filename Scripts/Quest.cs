@@ -1,6 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum QuestProgress
+{
+    NotEligible = 0,
+    Eligible,
+    Accepted,
+    Complete,
+    Done
+}
+
 [System.Serializable]
 public class Quest
 {
@@ -13,15 +22,6 @@ public class Quest
 
     // Npc from who to get this quest
     public int ownerId;
-
-    public enum QuestProgress
-    {
-        NotEligible,
-        Eligible,
-        Accepted,
-        Complete,
-        Done
-    }
 
     public List<QuestGoal> questGoalList;
     public List<ItemStack> rewardList;

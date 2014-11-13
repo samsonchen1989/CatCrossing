@@ -52,7 +52,7 @@ public class QuestManager : MonoBehaviour
         List<QuestGoal> goals = new List<QuestGoal>();
         goals.Add(new QuestGoalCollectItem(0, 5));
 
-        questDatabase.Add(0, new Quest("Hello new hero", 0, Quest.QuestProgress.Eligible, 
+        questDatabase.Add(0, new Quest("Hello new hero", 0, QuestProgress.Eligible, 
             "The world is in danger, my deer kitty! You need to level up! Now...Collect some grass for me, " +
             "I will reward you.",
             "You can collect them behind the house.",
@@ -61,7 +61,7 @@ public class QuestManager : MonoBehaviour
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalCollectItem(1, 10));
 
-        questDatabase.Add(1, new Quest("Too cold", 1, Quest.QuestProgress.Eligible,
+        questDatabase.Add(1, new Quest("Too cold", 1, QuestProgress.Eligible,
             "The milk is freezed! Collect 10 branches for me, not the git branches but real branches.",
             "Github cat has many branches.",
             -1, goals, null));
@@ -69,21 +69,21 @@ public class QuestManager : MonoBehaviour
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalVisit(1));
 
-        questDatabase.Add(2, new Quest("Visit Master Kitty", 2, Quest.QuestProgress.Eligible,
+        questDatabase.Add(2, new Quest("Visit Master Kitty", 2, QuestProgress.Eligible,
             "Visit Master Kitty behind the house.",
             "She has no mouse.",
             -1, goals, null));
     }
 
-    bool AcceptQuest(int questID)
+    public bool AcceptQuest(int questID)
     {
-        Quest quest = questDatabase [questID];
+        Quest quest = questDatabase[questID];
         if (quest == null) {
             Debug.Log("Fail to find this quest in QuestDatabase.");
             return false;
         }
 
-        if (quest.progress != Quest.QuestProgress.Eligible) {
+        if (quest.progress != QuestProgress.Eligible) {
             Debug.Log("Quest already accepted or not available.");
             return false;
         }
@@ -95,13 +95,13 @@ public class QuestManager : MonoBehaviour
 
         // doneQuest list check? maybe no need.
 
-        quest.progress = Quest.QuestProgress.Accepted;
+        quest.progress = QuestProgress.Accepted;
         acceptedQuestID.AddLast(questID);
 
         return true;
     }
 
-    bool AbandonQuest(int questID)
+    public bool AbandonQuest(int questID)
     {
         Quest quest = questDatabase [questID];
         if (quest == null) {
@@ -109,7 +109,7 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        if (quest.progress != Quest.QuestProgress.Accepted) {
+        if (quest.progress != QuestProgress.Accepted) {
             Debug.Log("Quest hasn't been accepted.");
             return false;
         }
@@ -119,13 +119,13 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        quest.progress = Quest.QuestProgress.Eligible;
+        quest.progress = QuestProgress.Eligible;
         acceptedQuestID.Remove(questID);
 
         return true;
     }
 
-    bool DoneQuest(int questID)
+    public bool DoneQuest(int questID)
     {
         Quest quest = questDatabase [questID];
         if (quest == null) {
@@ -133,7 +133,7 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        if (quest.progress != Quest.QuestProgress.Complete) {
+        if (quest.progress != QuestProgress.Complete) {
             Debug.Log("Quest is not complete yet.");
             return false;
         }
@@ -148,7 +148,7 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        quest.progress = Quest.QuestProgress.Done;
+        quest.progress = QuestProgress.Done;
         acceptedQuestID.Remove(questID);
         doneQuestID.AddLast(questID);
 
@@ -157,6 +157,9 @@ public class QuestManager : MonoBehaviour
 
     public static Quest QuestClone(int id)
     {
-        return instance.QuestDatabase [id].ShallowClone();
+        // ShallowClone(MemberwiseClone) creates a new Quest with different
+        // value type and the same reference type, not suitable here.
+        //return instance.QuestDatabase[id].ShallowClone();
+        return instance.QuestDatabase[id];
     }
 }

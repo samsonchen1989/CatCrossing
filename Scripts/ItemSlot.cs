@@ -4,9 +4,13 @@ using System.Collections;
 public class ItemSlot : MonoBehaviour
 {
 
+    #region Public gameObject to drop to in Inspector
+
     public UISprite background;
     public UISprite icon;
     public UILabel countLabel;
+
+    #endregion
 
     public ItemBackpack backPack;
     public int slotID;
