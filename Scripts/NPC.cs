@@ -23,7 +23,6 @@ public class Npc : MonoBehaviour
         }
 
         questList.AddLast(quest);
-        Debug.Log("npc id:" + npcID + ", quest:" + quest.title);
     }
 
     public void ClearQuestList()
@@ -71,7 +70,7 @@ public class Npc : MonoBehaviour
         }
 
         if (displayQuestUI && questListObject.activeInHierarchy == false) {
-            Debug.Log("Display quest UI.");
+            // Display quest UI
             questListObject.SetActive(true);
 
             questUI.dialog.text = this.npcDialog;

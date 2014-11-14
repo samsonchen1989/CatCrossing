@@ -10,8 +10,11 @@ public class NpcQuestUI : MonoBehaviour
     public UILabel dialog;
     public GameObject questTable;
     public GameObject questItemPrefab;
+
     public GameObject questListPanel;
     public GameObject questNewPanel;
+    public GameObject questUndonePanel;
+    public GameObject questCompletePanel;
 
     #endregion
 
@@ -32,7 +35,7 @@ public class NpcQuestUI : MonoBehaviour
             return;
         }
 
-        if (questListPanel == null || questNewPanel == null) {
+        if (questListPanel == null || questNewPanel == null || questCompletePanel == null || questUndonePanel == null) {
             Debug.LogError("Fail to get quest panel");
             return;
         }
@@ -46,9 +49,11 @@ public class NpcQuestUI : MonoBehaviour
 
     public void DisplayQuestListUI()
     {
-        NGUITools.SetActive(questListPanel, true);
         NGUITools.SetActive(questNewPanel, false);
- 
+        NGUITools.SetActive(questUndonePanel, false);
+        NGUITools.SetActive(questCompletePanel, false);
+        NGUITools.SetActive(questListPanel, true);
+
         foreach (Quest quest in questList) {
             GameObject questItem = NGUITools.AddChild(questTable, questItemPrefab);
             if (questItem != null) {
@@ -69,13 +74,41 @@ public class NpcQuestUI : MonoBehaviour
     public void DisplayQuestNewUI(Quest quest)
     {
         NpcQuestNewUI questNew = questNewPanel.GetComponent<NpcQuestNewUI>();
-        if (questNew != null) {
-            questNew.quest = quest;
+        if (questNew != null && quest != null) {
+            questNew.RefreshQuest(quest);
         }
 
         NGUITools.SetActive(questListPanel, false);
+        NGUITools.SetActive(questUndonePanel, false);
+        NGUITools.SetActive(questCompletePanel, false);
         NGUITools.SetActive(questNewPanel, true);
-    } 
+    }
+
+    public void DisplayQuestUndoneUI(Quest quest)
+    {
+        NpcQuestUndoneUI questUndo = questUndonePanel.GetComponent<NpcQuestUndoneUI>();
+        if (questUndo != null && quest != null) {
+            questUndo.RefreshQuest(quest);
+        }
+
+        NGUITools.SetActive(questListPanel, false);
+        NGUITools.SetActive(questNewPanel, false);
+        NGUITools.SetActive(questCompletePanel, false);
+        NGUITools.SetActive(questUndonePanel, true);
+    }
+
+    public void DisplayQuestCompleteUI(Quest quest)
+    {
+        NpcQuestCompleteUI questComplete = questCompletePanel.GetComponent<NpcQuestCompleteUI>();
+        if (questComplete != null && quest != null) {
+            questComplete.RefreshQuest(quest);
+        }
+
+        NGUITools.SetActive(questListPanel, false);
+        NGUITools.SetActive(questNewPanel, false);
+        NGUITools.SetActive(questUndonePanel, false);
+        NGUITools.SetActive(questCompletePanel, true);
+    }
     
     // Hide quest ui
     public void DisableQuestUI()

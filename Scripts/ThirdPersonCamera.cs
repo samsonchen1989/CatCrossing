@@ -44,7 +44,7 @@ public class ThirdPersonCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
+        if (InputManager.GetMouseButton(0) || InputManager.GetMouseButton(1)) {
             isRotating = true;
         } else {
             isRotating = false;

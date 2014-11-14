@@ -12,7 +12,7 @@ public class NpcQuestNewUI : MonoBehaviour {
 
     #endregion
 
-    public Quest quest;
+    public Quest currentQuest;
 
     // Use this for initialization
     void Start()
@@ -22,11 +22,7 @@ public class NpcQuestNewUI : MonoBehaviour {
             return;
         }
 
-        if (quest != null) {
-            questTitle.text = quest.title;
-            questDesc.text = quest.description;
-            questTarget.text = quest.hint;
-        }
+        RefreshUI();
     }
 	
     // Update is called once per frame
@@ -35,10 +31,29 @@ public class NpcQuestNewUI : MonoBehaviour {
 	
     }
 
-    public void AcceptCurrentQuest()
+    private void RefreshUI()
+    {
+        if (currentQuest == null) {
+            return;
+        }
+
+        questTitle.text = currentQuest.title;
+        questDesc.text = currentQuest.description;
+        questTarget.text = currentQuest.hint;
+    }
+
+    public void RefreshQuest(Quest quest)
     {
         if (quest != null) {
-            QuestManager.Instance.AcceptQuest(quest.id);
+            this.currentQuest = quest;
+            RefreshUI();
+        }
+    }
+
+    public void AcceptCurrentQuest()
+    {
+        if (currentQuest != null) {
+            QuestManager.Instance.AcceptQuest(currentQuest.id);
         }
     }
 }

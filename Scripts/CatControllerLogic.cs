@@ -88,7 +88,7 @@ public class CatControllerLogic : MonoBehaviour
             }
         }
         
-        if (Input.GetMouseButton(1)) {
+        if (InputManager.GetMouseButton(1)) {
             curDirection = gameCamTransform.rotation.eulerAngles.y;
         }
         
@@ -137,7 +137,7 @@ public class CatControllerLogic : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1)) {
+        if (InputManager.GetMouseButton(1)) {
             curDirection = gameCamTransform.rotation.eulerAngles.y;
             //Debug.Log("curDirection:" + curDirection);
         }

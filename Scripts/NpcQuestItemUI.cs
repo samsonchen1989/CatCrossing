@@ -34,17 +34,24 @@ public class NpcQuestItemUI : MonoBehaviour
             return;
         }
 
-        Debug.Log("npc quest progress:" + npcQuest.progress.ToString());
-
-        questStateIcon.spriteName = QuestIcon [(int)npcQuest.progress];
+        questStateIcon.spriteName = QuestIcon[(int)npcQuest.progress];
         questTitle.text = npcQuest.title;
     }
 
     void OnClick()
     {
-        Debug.Log("Click Quest Item.");
-        if (npcQuest.progress == QuestProgress.Eligible) {
-            questUI.DisplayQuestNewUI(npcQuest);
+        switch (npcQuest.progress) {
+            case QuestProgress.Eligible:
+                questUI.DisplayQuestNewUI(npcQuest);
+                break;
+            case QuestProgress.Accepted:
+                questUI.DisplayQuestUndoneUI(npcQuest);
+                break;
+            case QuestProgress.Complete:
+                questUI.DisplayQuestCompleteUI(npcQuest);
+                break;
+            default:
+                break;
         }
     }
     
