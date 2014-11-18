@@ -72,6 +72,7 @@ public class ItemPrefabsDefinition : MonoBehaviour
         itemDic.Add(0, new Item("Item_Grass", 0, "Cat eats grass sometimes.", Item.ItemType.Consumable, 20));
         itemDic.Add(1, new Item("Item_Branch", 1, "Father of fire.", Item.ItemType.Consumable, 10));
         itemDic.Add(2, new Item("Item_Bottle_Empty", 2, "Fill it full!", Item.ItemType.Consumable, 2));
+        itemDic.Add(3, new Item("Item_Mine1", 3, "Tough.", Item.ItemType.Quest, 20));
     }
 
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public enum QuestProgress
 {
-    NotEligible = 0,
+    NotEligible,
     Eligible,
     Accepted,
     Complete,

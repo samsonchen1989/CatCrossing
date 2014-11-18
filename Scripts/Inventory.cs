@@ -33,8 +33,11 @@ public class Inventory : MonoBehaviour {
         }
     }
 
+    [HideInInspector]
     public List<ItemStack> inventory;
+    [HideInInspector]
     public ItemStack swapItemStack;
+    [HideInInspector]
     public int swapSlotId;
     
     public ReadOnlyCollection<ItemStack> readonlyInventory;

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Npc : MonoBehaviour
 {
-
     public int npcID;
     public string npcDialog;
     LinkedList<Quest> questList = new LinkedList<Quest>();
@@ -58,14 +57,9 @@ public class Npc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity);
-        if (hit) {
-            GameObject hitObject = hitInfo.transform.gameObject;
-            if (hitObject && hitObject.tag == "NPC") {
-                if (clickable && Input.GetMouseButtonUp(1)) {
-                    displayQuestUI = true;
-                }
+        if (MouseRaycastManager.Instance.hitObjectType == HitObjectType.NPC) {
+            if (clickable && Input.GetMouseButtonUp(1)) {
+                displayQuestUI = true;
             }
         }
 
