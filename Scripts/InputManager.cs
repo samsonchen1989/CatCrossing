@@ -3,6 +3,8 @@ using System.Collections;
 
 public static class InputManager
 {
+    const int UILayer = 5;
+
     public static bool GetMouseButton(int button)
     {
         if (UICamera.hoveredObject == null) {
@@ -10,11 +12,26 @@ public static class InputManager
         } else {
             // If click/drop on 2D UICamera, do not send the event to MainCamera.
             // 5 represents layer "UI"
-            if (UICamera.hoveredObject.layer == 5) {
+            if (UICamera.hoveredObject.layer == UILayer) {
                 return false;
             }
         }
 
+        return false;
+    }
+
+    public static bool GetMouseButtonUp(int button)
+    {
+        if (UICamera.hoveredObject == null) {
+            return Input.GetMouseButtonUp(button);
+        } else {
+            // If click/drop on 2D UICamera, do not send the event to MainCamera.
+            // 5 represents layer "UI"
+            if (UICamera.hoveredObject.layer == UILayer) {
+                return false;
+            }
+        }
+        
         return false;
     }
 }

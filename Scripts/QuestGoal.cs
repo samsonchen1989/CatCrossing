@@ -25,13 +25,13 @@ public class QuestGoal
 
 public class QuestGoalCollectItem : QuestGoal
 {
-    public int itemId;
+    public int itemID;
     public int currentNumber;
     public int targetNumber;
 
-    public QuestGoalCollectItem(int itemId, int targetNumber, int currentNumber = 0, bool complete = false) : base(complete)
+    public QuestGoalCollectItem(int itemID, int targetNumber, int currentNumber = 0, bool complete = false) : base(complete)
     {
-        this.itemId = itemId;
+        this.itemID = itemID;
         this.targetNumber = targetNumber;
         this.currentNumber = currentNumber;
     }

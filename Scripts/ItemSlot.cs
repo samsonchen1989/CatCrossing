@@ -42,6 +42,12 @@ public class ItemSlot : MonoBehaviour
             countLabel.text = slotItemStack.num.ToString();
         }
     }
+
+    void OnDestroy()
+    {
+        // Unregister event OnInventoryChanged
+        inventory.InventoryChanged -= OnInventoryChanged;
+    }
 	
     void OnClick()
     {

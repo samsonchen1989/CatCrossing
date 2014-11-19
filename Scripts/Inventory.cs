@@ -139,6 +139,10 @@ public class Inventory : MonoBehaviour {
         return stack;
     }
 
+    public ItemStack Remove(ItemStack stack) {
+
+    }
+
     public void UseConsumable(Item item, int slot)
     {
         RemoveOne(slot);
@@ -173,6 +177,24 @@ public class Inventory : MonoBehaviour {
         }
         
         InventoryChanged();
+    }
+
+    public int GetItemCount(int itemID)
+    {
+        if (itemID < 0) {
+            Debug.Log("Invalid itemID to get count.");
+            return -1;
+        }
+
+        int num = 0;
+
+        foreach(ItemStack stack in inventory) {
+            if (stack.item.itemID == itemID) {
+                num += stack.num;
+            }
+        }
+
+        return num;
     }
 
     public bool InventoryContains(int id)

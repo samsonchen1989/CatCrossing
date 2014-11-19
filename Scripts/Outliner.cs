@@ -22,6 +22,7 @@ public class Outliner : MonoBehaviour
 
         if (outlineShader == null) {
             Debug.LogError("Fail to find outline shader.");
+            return;
         }
 
         MouseRaycastManager.Instance.HitTypeChanged += OnMouseHitObjectChanged;
@@ -32,8 +33,18 @@ public class Outliner : MonoBehaviour
 
     }
 
+    void OnDestroy()
+    {
+        // Unregister event OnMouseHitObjectChanged before destroy itself
+        MouseRaycastManager.Instance.HitTypeChanged -= OnMouseHitObjectChanged;
+    }
+
     public void EnableOutline(bool enable)
     {
+        if (meshRenderer == null || meshRenderer.materials == null) {
+            return;
+        }
+
         Material[] materials = meshRenderer.materials;
         if (enable) {
             materials[0].SetColor("_OutlineColor", outlineColor);
@@ -47,7 +58,8 @@ public class Outliner : MonoBehaviour
     private void OnMouseHitObjectChanged()
     {
         if (MouseRaycastManager.Instance.hitObjectType == HitObjectType.InteractiveItem) {
-            if (MouseRaycastManager.Instance.hitObject == gameObject) {
+            if (MouseRaycastManager.Instance.hitObject != null &&
+                MouseRaycastManager.Instance.hitObject == gameObject) {
                 // Mouse raycast hit this gameobject
                 EnableOutline(true);
             }

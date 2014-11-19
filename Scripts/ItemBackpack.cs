@@ -19,9 +19,7 @@ public class ItemBackpack : MonoBehaviour
         }
 
         //just for ui test
-        Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(2, 3));
-        Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(0, 25));
-        Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(1, 10));
+        //Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(2, 3));
 
         this.transform.localPosition = new Vector3(-(spacing * (maxColumns / 2.0f)) + padding,
                                                    -(Screen.height / 2 - spacing * maxRows - padding),
