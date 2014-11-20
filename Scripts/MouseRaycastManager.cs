@@ -17,7 +17,7 @@ public class MouseRaycastManager : MonoBehaviour
     public static MouseRaycastManager Instance {
         get {
             if (instance == null) {
-                Debug.LogError("Fail to get RaycastHitManager instance.");
+                Debug.Log("Fail to get RaycastHitManager instance.");
             }
 
             return instance;

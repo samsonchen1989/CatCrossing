@@ -10,17 +10,9 @@ public class QuestGoal
         this.complete = complete;
     }	
 
-    // Use this for initialization
-    void Start()
-    {
-	
-    }
-	
-    // Update is called once per frame
-    void Update()
-    {
-	
-    }
+    public virtual bool CheckProgress() { return false; }
+
+    public virtual bool DoneGoal() { return false; }
 }
 
 public class QuestGoalCollectItem : QuestGoal
@@ -34,6 +26,23 @@ public class QuestGoalCollectItem : QuestGoal
         this.itemID = itemID;
         this.targetNumber = targetNumber;
         this.currentNumber = currentNumber;
+    }
+
+    public override bool CheckProgress()
+    {
+        int inventoryNum = Inventory.Instance.GetItemCount(itemID);
+        currentNumber = Mathf.Min(inventoryNum, targetNumber);
+
+        if (currentNumber == targetNumber) {
+            complete = true;
+        }
+
+        return complete;
+    }
+
+    public override bool DoneGoal()
+    {
+        return Inventory.Instance.Remove(itemID, targetNumber);
     }
 }
 

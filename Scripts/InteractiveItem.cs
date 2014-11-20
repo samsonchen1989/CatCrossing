@@ -28,7 +28,6 @@ public class InteractiveItem : MonoBehaviour
             if (MouseRaycastManager.Instance.hitDistance <= MaxInteractDis && InputManager.GetMouseButtonUp(1)) {
                 ItemStack leftStack = Inventory.Instance.AddStack(itemInfo.GetItemStack());
                 if (leftStack == null) {
-                    Debug.Log("Added to inventory.");
                     // All item stack added to inventory
                     itemInfo.ReduceInteractiveCount();
                 }

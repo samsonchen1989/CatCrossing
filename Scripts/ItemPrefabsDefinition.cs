@@ -59,7 +59,7 @@ public class ItemPrefabsDefinition : MonoBehaviour
 
     public static Item ItemClone(int id)
     {
-        return instance.ItemDictionary [id].ShallowClone();
+        return instance.ItemDictionary[id].ShallowClone();
     }
 
     public static ItemStack StackClone(int itemID, int size)

@@ -36,7 +36,9 @@ public class Outliner : MonoBehaviour
     void OnDestroy()
     {
         // Unregister event OnMouseHitObjectChanged before destroy itself
-        MouseRaycastManager.Instance.HitTypeChanged -= OnMouseHitObjectChanged;
+        if (MouseRaycastManager.Instance != null) {
+            MouseRaycastManager.Instance.HitTypeChanged -= OnMouseHitObjectChanged;
+        }
     }
 
     public void EnableOutline(bool enable)

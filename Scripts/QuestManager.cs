@@ -20,6 +20,14 @@ public class QuestManager : MonoBehaviour
 
     #endregion
 
+    #region Public gameObject to drop to in Inspector
+
+    public GameObject questTrackerUI;
+
+    #endregion
+
+    private NpcQuestTrackerUI trackerUI;
+
     private Dictionary<int, Quest> questDatabase = new Dictionary<int, Quest>();
 
     public Dictionary<int, Quest> QuestDatabase {
@@ -29,6 +37,14 @@ public class QuestManager : MonoBehaviour
     }
 
     private LinkedList<int> acceptedQuestID = new LinkedList<int>();
+
+    public LinkedList<int> AcceptedQuestID
+    {
+        get {
+            return acceptedQuestID;
+        }
+    }
+
     private LinkedList<int> doneQuestID = new LinkedList<int>();
 
     void Awake()
@@ -42,34 +58,53 @@ public class QuestManager : MonoBehaviour
         QuestDatabaseInit();
     }
 
-    // TODO, inti quest database from external file like xml/json file.
-    void QuestDatabaseInit()
+    void Start()
     {
+        if (questTrackerUI == null) {
+            Debug.LogError("Fail to get QuestManager's questTrackUI.");
+            return;
+        }
+
+        trackerUI = questTrackerUI.GetComponent<NpcQuestTrackerUI>();
+        if (trackerUI == null) {
+            Debug.LogError("Fail to get quest track ui component.");
+            return;
+        }
+
+        Inventory.Instance.InventoryChanged += OnInventoryChanged;
+    }
+
+    // TODO, inti quest database from external file like xml/json file.
+    private void QuestDatabaseInit()
+    {
+        // Quest1 for test.
         List<ItemStack> reward = new List<ItemStack>();
         reward.Add(ItemPrefabsDefinition.StackClone(0, 1));
         reward.Add(ItemPrefabsDefinition.StackClone(1, 1));
 
         List<QuestGoal> goals = new List<QuestGoal>();
-        goals.Add(new QuestGoalCollectItem(0, 5));
+        goals.Add(new QuestGoalCollectItem(3, 5));
 
         questDatabase.Add(0, new Quest("Hello new hero", 0, QuestProgress.Eligible, 
-            "The world is in danger, my deer kitty! You need to level up! Now...Collect some grass for me, " +
+            "The world is in danger, my deer kitty! You need to level up! Now...Collect some rock for me, " +
             "I will reward you.",
-            "Collect 5 grass for GoodbyeKitty.",
-            "You can collect them behind the house.",
+            "Collect 5 rocks.",
+            "You can collect them around the house.",
             "OK, your kind heart is the first thing to be a hero.",
             -1, goals, reward));
 
+        // Quest2 for test.
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalCollectItem(1, 10));
 
         questDatabase.Add(1, new Quest("Too cold", 1, QuestProgress.Eligible,
             "The milk is freezed! Collect 10 branches for me, not the git branches but real branches.",
-            "Collect 10 branches for GoodbyeKitty.",
+            "Collect 10 branches.",
             "Github cat has many branches.",
             "Wait a moment, I will warm up these milk and you can have a taste too!",
             -1, goals, null));
 
+        // Quest3 for test.
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalVisit(1));
 
@@ -79,6 +114,24 @@ public class QuestManager : MonoBehaviour
             "She has no patience, now go.",
             "",
             -1, goals, null));
+    }
+
+    private void OnInventoryChanged()
+    {
+        foreach (int questID in acceptedQuestID) {
+            bool complete = true;
+            Quest quest = questDatabase[questID];
+            foreach (QuestGoal goal in quest.questGoalList) {
+                if (goal.CheckProgress() == false) {
+                    complete = false;
+                }
+            }
+
+            if (complete) {
+                CompleteQuest(questID);
+                Debug.Log("Complete Quest!");
+            }
+        }
     }
 
     public bool AcceptQuest(int questID)
@@ -103,6 +156,7 @@ public class QuestManager : MonoBehaviour
 
         quest.progress = QuestProgress.Accepted;
         acceptedQuestID.AddLast(questID);
+        trackerUI.ReInitQuestTrackerUI();
 
         return true;
     }
@@ -127,6 +181,7 @@ public class QuestManager : MonoBehaviour
 
         quest.progress = QuestProgress.Eligible;
         acceptedQuestID.Remove(questID);
+        trackerUI.ReInitQuestTrackerUI();
 
         return true;
     }
@@ -182,8 +237,15 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        quest.progress = QuestProgress.Done;
         acceptedQuestID.Remove(questID);
+
+        quest.progress = QuestProgress.Done;
+        foreach (QuestGoal goal in quest.questGoalList) {
+            goal.DoneGoal();
+        }
+
+        trackerUI.ReInitQuestTrackerUI();
+
         doneQuestID.AddLast(questID);
 
         return true;

@@ -47,4 +47,13 @@ public class NpcQuestCompleteUI : MonoBehaviour
             RefreshUI();
         }
     }
+
+    public void DoneCurrentQuest()
+    {
+        if (currentQuest == null) {
+            return;
+        }
+
+        QuestManager.Instance.DoneQuest(currentQuest.id);
+    }
 }

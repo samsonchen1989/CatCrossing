@@ -122,7 +122,7 @@ public class Inventory : MonoBehaviour {
         }
 
         stack.num--; //take one
-        ItemStack newSt = new ItemStack() {num = 1, item = stack.item};
+        ItemStack newSt = new ItemStack() { num = 1, item = stack.item };
         if (stack.num == 0) {
             inventory[pos] = null;
         }
@@ -139,8 +139,56 @@ public class Inventory : MonoBehaviour {
         return stack;
     }
 
-    public ItemStack Remove(ItemStack stack) {
+    // This function is used after completed quest is reported to npc,
+    // therefore we do not need to check whether inventory has sufficient
+    // item to remove.
+    public bool Remove(ItemStack stack) {
+        int leftNum = stack.num;
+        for (int i = 0; i < inventory.Count; i++) {
+            if (inventory[i].item.itemID != stack.item.itemID) {
+                continue;
+            }
 
+            if (inventory[i].num > leftNum) {
+                inventory[i].num -= leftNum;
+                leftNum = 0;
+            } else {
+                leftNum -= inventory[i].num;
+                Remove(i);
+            }
+
+            if (leftNum == 0) {
+                InventoryChanged();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Same function as above
+    public bool Remove(int itemID, int count) {
+        int leftNum = count;
+        for (int i = 0; i < inventory.Count; i++) {
+            if (inventory[i].item.itemID != itemID) {
+                continue;
+            }
+            
+            if (inventory[i].num > leftNum) {
+                inventory[i].num -= leftNum;
+                leftNum = 0;
+            } else {
+                leftNum -= inventory[i].num;
+                Remove(i);
+            }
+            
+            if (leftNum == 0) {
+                InventoryChanged();
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public void UseConsumable(Item item, int slot)
@@ -189,6 +237,10 @@ public class Inventory : MonoBehaviour {
         int num = 0;
 
         foreach(ItemStack stack in inventory) {
+            if (stack == null) {
+                continue;
+            }
+
             if (stack.item.itemID == itemID) {
                 num += stack.num;
             }
