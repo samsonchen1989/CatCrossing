@@ -129,9 +129,10 @@ public class QuestManager : MonoBehaviour
 
             if (complete) {
                 CompleteQuest(questID);
-                Debug.Log("Complete Quest!");
             }
         }
+
+        trackerUI.RefreshQuestTrackerUI();
     }
 
     public bool AcceptQuest(int questID)
@@ -240,11 +241,16 @@ public class QuestManager : MonoBehaviour
         acceptedQuestID.Remove(questID);
 
         quest.progress = QuestProgress.Done;
+        // Remove quest item from inventory
         foreach (QuestGoal goal in quest.questGoalList) {
             goal.DoneGoal();
         }
 
+        // Refresh Quest Tracker UI
         trackerUI.ReInitQuestTrackerUI();
+
+        // Remove from npc's quest list
+        QuestDispatcher.Instance.DoneQuest(quest);
 
         doneQuestID.AddLast(questID);
 

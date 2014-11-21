@@ -40,6 +40,11 @@ public class QuestGoalCollectItem : QuestGoal
         return complete;
     }
 
+    public override string ToString()
+    {
+        return string.Format("{0}/{1} {2}", currentNumber, targetNumber, ItemPrefabsDefinition.GetItemName(itemID));
+    }
+
     public override bool DoneGoal()
     {
         return Inventory.Instance.Remove(itemID, targetNumber);

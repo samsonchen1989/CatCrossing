@@ -5,22 +5,22 @@ using System.Collections.Generic;
 public class QuestNode
 {
     int stepID;
-    List<Quest> questNodeList;
+    List<Quest> questList;
 
-    public List<Quest> QuestNodeList {
+    public List<Quest> QuestList {
         get {
-            return questNodeList;
+            return questList;
         }
     }
 
     public QuestNode(int stepID)
     {
         this.stepID = stepID;
-        questNodeList = new List<Quest>();
+        questList = new List<Quest>();
     }
 
     public void AddQuest(int questID)
     {
-        questNodeList.Add(QuestManager.QuestClone(questID));
+        questList.Add(QuestManager.QuestClone(questID));
     }
 }

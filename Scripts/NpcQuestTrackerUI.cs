@@ -30,9 +30,15 @@ public class NpcQuestTrackerUI : MonoBehaviour {
     // this function to re-init all UI
     public void ReInitQuestTrackerUI()
     {
-        // Clear all table's child object first
+        /*
         foreach (Transform child in questTable.transform) {
             GameObject.DestroyImmediate(child.gameObject);
+        }
+        */
+
+        // Clear all table's child object first
+        foreach (GameObject questItem in trackQuestList) {
+            GameObject.DestroyImmediate(questItem);
         }
 
         trackQuestList.Clear();

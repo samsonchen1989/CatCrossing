@@ -8,7 +8,6 @@ public class NpcQuestProgressUI : MonoBehaviour
     
     public UILabel questName;
     public UILabel questProgress;
-    public UILabel questTip;
     public UILabel questDetail;
     
     #endregion
@@ -25,7 +24,7 @@ public class NpcQuestProgressUI : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (questName == null || questProgress == null || questTip == null || questDetail == null) {
+        if (questName == null || questProgress == null || questDetail == null) {
             Debug.LogError("Fail to find quest progress ui's label.");
             return;
         }
@@ -46,12 +45,12 @@ public class NpcQuestProgressUI : MonoBehaviour
         }
 
         questName.text = trackQuest.title;
-        questTip.text = trackQuest.target;
-        questProgress.text = QuestProgressText [(int)trackQuest.progress];
+        questProgress.text = QuestProgressText[(int)trackQuest.progress];
 
-        string detail;
+        questDetail.text = null;
+
         foreach (QuestGoal goal in trackQuest.questGoalList) {
-            //detail += goal
+            questDetail.text += goal.ToString() + "\n";
         }
     }
 

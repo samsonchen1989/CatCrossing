@@ -67,6 +67,15 @@ public class ItemPrefabsDefinition : MonoBehaviour
         return new ItemStack() { num = size, item = ItemClone(itemID) };
     }
 
+    public static string GetItemName(int id)
+    {
+        if (instance.ItemDictionary[id] == null) {
+            return "";
+        }
+
+        return instance.ItemDictionary[id].itemName;
+    }
+
     void ItemDefinitionInit()
     {
         itemDic.Add(0, new Item("Item_Grass", 0, "Cat eats grass sometimes.", Item.ItemType.Consumable, 20));

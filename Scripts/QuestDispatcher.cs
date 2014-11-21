@@ -67,15 +67,22 @@ public class QuestDispatcher : MonoBehaviour
 
     void DispatchSceneQuest()
     {
-        if (allQuests [currentStep] == null) {
+        if (allQuests[currentStep] == null) {
             Debug.Log("No quest in current step.");
             return;
         }
 
         //check if all former quests are complete
  
-        foreach (Quest quest in allQuests[currentStep].QuestNodeList) {
+        foreach (Quest quest in allQuests[currentStep].QuestList) {
             npcList[quest.ownerId].AddQuest(quest);
         }
+    }
+
+    public void DoneQuest(Quest quest)
+    {
+        npcList[quest.ownerId].RemoveQuest(quest);
+        // Check whether current step's quests are all done,
+        // if true, then dispatch next step's quests
     }
 }

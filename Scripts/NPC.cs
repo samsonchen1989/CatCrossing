@@ -24,6 +24,11 @@ public class Npc : MonoBehaviour
         questList.AddLast(quest);
     }
 
+    public void RemoveQuest(Quest quest)
+    {
+        questList.Remove(quest);
+    }
+
     public void ClearQuestList()
     {
         questList.Clear();
