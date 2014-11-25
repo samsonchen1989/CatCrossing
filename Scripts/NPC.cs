@@ -9,7 +9,6 @@ public class Npc : MonoBehaviour
     LinkedList<Quest> questList = new LinkedList<Quest>();
 
     private bool clickable = false;
-    private bool displayQuestUI = false;
     private NpcQuestUI questUI;
 
     public GameObject questListObject;
@@ -32,11 +31,6 @@ public class Npc : MonoBehaviour
     public void ClearQuestList()
     {
         questList.Clear();
-    }
-
-    public void SetQuestUIVisible(bool visible)
-    {
-        displayQuestUI = visible;
     }
 
     void Awake()
@@ -64,11 +58,11 @@ public class Npc : MonoBehaviour
     {
         if (MouseRaycastManager.Instance.hitObjectType == HitObjectType.NPC) {
             if (clickable && Input.GetMouseButtonUp(1)) {
-                displayQuestUI = true;
+                questUI.displayQuestUI = true;
             }
         }
 
-        if (displayQuestUI && questListObject.activeInHierarchy == false) {
+        if (questUI.displayQuestUI && questListObject.activeInHierarchy == false) {
             // Display quest UI
             questListObject.SetActive(true);
 
@@ -78,7 +72,7 @@ public class Npc : MonoBehaviour
             questUI.DisplayQuestListUI();
         }
 
-        if (displayQuestUI == false && questListObject.activeInHierarchy) {
+        if (questUI.displayQuestUI == false && questListObject.activeInHierarchy) {
             questUI.DisableQuestUI();
             questListObject.SetActive(false);
         }
@@ -92,6 +86,6 @@ public class Npc : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         clickable = false;
-        displayQuestUI = false;
+        questUI.displayQuestUI = false;
     }
 }

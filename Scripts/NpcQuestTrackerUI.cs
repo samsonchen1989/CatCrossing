@@ -8,6 +8,7 @@ public class NpcQuestTrackerUI : MonoBehaviour {
 
     public GameObject questProgressPrefab;
     public GameObject questTable;
+    public UILabel buttonLabel;
 
     #endregion
 
@@ -17,6 +18,11 @@ public class NpcQuestTrackerUI : MonoBehaviour {
     void Start () {
         if (questProgressPrefab == null || questTable == null) {
             Debug.LogError("Fail to find quest tracker ui's prefab or table.");
+            return;
+        }
+
+        if (buttonLabel == null) {
+            Debug.LogError("Fail to find quest tracker button's label.");
             return;
         }
     }
@@ -30,12 +36,6 @@ public class NpcQuestTrackerUI : MonoBehaviour {
     // this function to re-init all UI
     public void ReInitQuestTrackerUI()
     {
-        /*
-        foreach (Transform child in questTable.transform) {
-            GameObject.DestroyImmediate(child.gameObject);
-        }
-        */
-
         // Clear all table's child object first
         foreach (GameObject questItem in trackQuestList) {
             GameObject.DestroyImmediate(questItem);
@@ -80,5 +80,15 @@ public class NpcQuestTrackerUI : MonoBehaviour {
     public void DisableQuestTrackerUI()
     {
         NGUITools.SetActive(this.gameObject, false);
+    }
+
+    // whooo...
+    public void ResetButtonText()
+    {
+        if (buttonLabel.text == "Expand") {
+            buttonLabel.text = "Hide";
+        } else {
+            buttonLabel.text = "Expand";
+        }
     }
 }

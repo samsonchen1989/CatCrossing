@@ -21,6 +21,8 @@ public class ScreenTipManager : MonoBehaviour
         }
     }
 
+    bool startFade;
+
     void Awake()
     {
         if (instance != null) {
@@ -37,11 +39,28 @@ public class ScreenTipManager : MonoBehaviour
             Debug.LogError("Fail to find screen tip label.");
             return;
         }
+
+        startFade = false;
+    }
+
+    void Update()
+    {
+        if (startFade) {
+
+            // 2s to fade away.
+            tipLabel.alpha = Mathf.Max(0.0f, tipLabel.alpha - Time.deltaTime / 2);
+
+            if (tipLabel.alpha == 0) {
+                startFade = false;
+                //Debug.Log("Time:" + (Time.timeSinceLevelLoad - time).ToString());
+            }
+        }
     }
 
     public void DisplayTipMessage(string msg)
     {
         tipLabel.text = msg;
-        tipLabel.GetComponent<TweenAlpha>().PlayForward();
+        tipLabel.alpha = 1.0f;
+        startFade = true;
     }
 }

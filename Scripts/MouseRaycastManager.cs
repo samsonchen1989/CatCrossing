@@ -57,6 +57,7 @@ public class MouseRaycastManager : MonoBehaviour
     void Update()
     {
         CheckHitTypeChange();
+        //Debug.Log("Hit object tag:" + this.hitObjectType);
 
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity);

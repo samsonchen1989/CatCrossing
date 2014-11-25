@@ -77,7 +77,7 @@ public class QuestManager : MonoBehaviour
     // TODO, inti quest database from external file like xml/json file.
     private void QuestDatabaseInit()
     {
-        // Quest1 for test.
+        // Quest0 for test.
         List<ItemStack> reward = new List<ItemStack>();
         reward.Add(ItemPrefabsDefinition.StackClone(0, 1));
         reward.Add(ItemPrefabsDefinition.StackClone(1, 1));
@@ -91,9 +91,9 @@ public class QuestManager : MonoBehaviour
             "Collect 5 rocks.",
             "You can collect them around the house.",
             "OK, your kind heart is the first thing to be a hero.",
-            -1, goals, reward));
+            -1, goals, reward, 0));
 
-        // Quest2 for test.
+        // Quest1 for test.
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalCollectItem(1, 10));
 
@@ -102,18 +102,18 @@ public class QuestManager : MonoBehaviour
             "Collect 10 branches.",
             "Github cat has many branches.",
             "Wait a moment, I will warm up these milk and you can have a taste too!",
-            -1, goals, null));
+            -1, goals, null, 0));
 
-        // Quest3 for test.
+        // Quest2 for test.
         goals = new List<QuestGoal>();
         goals.Add(new QuestGoalVisit(1));
 
         questDatabase.Add(2, new Quest("Visit Master Kitty", 2, QuestProgress.Eligible,
             "Ninja Kitty wants to tell you something about battle, visit her behind the house.",
-            "Visit Ninja Kitty to know how to battle.",
+            "Visit Ninja Kitty.",
             "She has no patience, now go.",
             "",
-            -1, goals, null));
+            -1, goals, null, 0));
     }
 
     private void OnInventoryChanged()

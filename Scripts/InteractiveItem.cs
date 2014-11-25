@@ -3,7 +3,6 @@ using System.Collections;
 
 public class InteractiveItem : MonoBehaviour
 {
-
     const float MaxInteractDis = 5.0f;
 
     // Use this for initialization
@@ -25,11 +24,15 @@ public class InteractiveItem : MonoBehaviour
                 return;
             }
 
-            if (MouseRaycastManager.Instance.hitDistance <= MaxInteractDis && InputManager.GetMouseButtonUp(1)) {
-                ItemStack leftStack = Inventory.Instance.AddStack(itemInfo.GetItemStack());
-                if (leftStack == null) {
-                    // All item stack added to inventory
-                    itemInfo.ReduceInteractiveCount();
+            if (InputManager.GetMouseButtonUp(1)) {
+                if (MouseRaycastManager.Instance.hitDistance <= MaxInteractDis) {
+                    ItemStack leftStack = Inventory.Instance.AddStack(itemInfo.GetItemStack());
+                    if (leftStack == null) {
+                        // All item stack added to inventory
+                        itemInfo.ReduceInteractiveCount();
+                    }
+                } else {
+                    ScreenTipManager.Instance.DisplayTipMessage("Too far away.");
                 }
             }
         }

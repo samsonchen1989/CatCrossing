@@ -3,6 +3,7 @@ using System.Collections;
 
 public static class InputManager
 {
+    // 5 is UI Layer
     const int UILayer = 5;
 
     public static bool GetMouseButton(int button)

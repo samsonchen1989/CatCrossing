@@ -55,5 +55,18 @@ public class NpcQuestNewUI : MonoBehaviour {
         if (currentQuest != null) {
             QuestManager.Instance.AcceptQuest(currentQuest.id);
         }
+
+        foreach (QuestGoal goal in currentQuest.questGoalList) {
+            if (goal.GetQuestType() == QuestType.Visit) {
+                int newNpc = ((QuestGoalVisit)goal).targetNpcId;
+                // Contains visit content, change npc's quest list
+                QuestDispatcher.Instance.ChangeQuestOwner(currentQuest, currentQuest.ownerId, newNpc);
+
+                if (currentQuest.questGoalList.Count == 1) {
+                    // Only one visit goal
+                    QuestManager.Instance.CompleteQuest(currentQuest.id);
+                }
+            }
+        }
     }
 }

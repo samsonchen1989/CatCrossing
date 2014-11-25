@@ -22,6 +22,9 @@ public class NpcQuestUI : MonoBehaviour
     public List<GameObject> questItemList = new List<GameObject>();
     public Npc currentNpc;
 
+    // Whether display or not is depending on NpcQuestUI itself, not NPC, especially there may be many NPCs.
+    public bool displayQuestUI;
+
     // Use this for initialization
     void Start()
     {
@@ -114,7 +117,7 @@ public class NpcQuestUI : MonoBehaviour
     public void DisableQuestUI()
     {
         if (currentNpc != null) {
-            currentNpc.SetQuestUIVisible(false);
+            displayQuestUI = false;
         }
 
         // Remove added quest items under questTable immediately

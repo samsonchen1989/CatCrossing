@@ -28,7 +28,8 @@ public class Quest
     public List<ItemStack> rewardList;
 
     public Quest(string title, int id, QuestProgress progress, string description, string target, string hint,
-                 string completeDesc, int nextQuestId, List<QuestGoal> questGoalList, List<ItemStack> rewardList)
+                 string completeDesc, int nextQuestId, List<QuestGoal> questGoalList, List<ItemStack> rewardList,
+                 int ownerId)
     {
         this.title = title;
         this.id = id;
@@ -41,6 +42,8 @@ public class Quest
 
         this.questGoalList = questGoalList;
         this.rewardList = rewardList;
+
+        this.ownerId = ownerId;
     }
 
     public Quest ShallowClone()

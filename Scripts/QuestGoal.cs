@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum QuestType
+{
+    Collect,
+    Kill,
+    Visit,
+    Default
+}
+
 public class QuestGoal
 {
     public bool complete;
@@ -8,11 +16,13 @@ public class QuestGoal
     public QuestGoal(bool complete = false)
     {
         this.complete = complete;
-    }	
+    }
 
     public virtual bool CheckProgress() { return false; }
 
     public virtual bool DoneGoal() { return false; }
+
+    public virtual QuestType GetQuestType() { return QuestType.Default; }
 }
 
 public class QuestGoalCollectItem : QuestGoal
@@ -49,6 +59,11 @@ public class QuestGoalCollectItem : QuestGoal
     {
         return Inventory.Instance.Remove(itemID, targetNumber);
     }
+
+    public override QuestType GetQuestType()
+    {
+        return QuestType.Collect;
+    }
 }
 
 public class QuestGoalKill : QuestGoal
@@ -63,6 +78,11 @@ public class QuestGoalKill : QuestGoal
         this.targetNumber = targetNumber;
         this.currentNumber = currentNumber;
     }
+
+    public override QuestType GetQuestType()
+    {
+        return QuestType.Kill;
+    }
 }
 
 public class QuestGoalVisit : QuestGoal
@@ -72,5 +92,10 @@ public class QuestGoalVisit : QuestGoal
     public QuestGoalVisit(int targetNpcId, bool complete = false) : base(complete)
     {
         this.targetNpcId = targetNpcId;
+    }
+
+    public override QuestType GetQuestType()
+    {
+        return QuestType.Visit;
     }
 }
