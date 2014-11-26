@@ -153,10 +153,12 @@ public class QuestManager : MonoBehaviour
             return false;
         }
 
-        // doneQuest list check? maybe no need.
-
         quest.progress = QuestProgress.Accepted;
         acceptedQuestID.AddLast(questID);
+
+        // Check whether already have enough item for accepted quest
+        OnInventoryChanged();
+
         trackerUI.ReInitQuestTrackerUI();
 
         return true;
