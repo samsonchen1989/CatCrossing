@@ -9,6 +9,7 @@ public class GameSceneManager : MonoBehaviour
     private static GameSceneManager instance;
     public static string StartScene = "Scene0";
     public static string PlayScene = "Scene1";
+    public static string LoadScene = "Loading";
 
     void Awake()
     {
@@ -39,11 +40,18 @@ public class GameSceneManager : MonoBehaviour
         activeState = newState;
     }
 
+    public void Load(string name)
+    {
+        if (Application.loadedLevelName != name) {
+            Application.LoadLevel(name);
+        }
+    }
+
     // "Play" button click delegate
     public void Play()
     {
         if (Application.loadedLevelName != PlayScene) {
-            Application.LoadLevel(PlayScene);
+            StartCoroutine(InnerLoad(PlayScene));
         }
     }
 
@@ -51,5 +59,14 @@ public class GameSceneManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    IEnumerator InnerLoad(string name)
+    {
+        Application.LoadLevel(LoadScene);
+        // Wait for one frame
+        yield return null;
+
+        Application.LoadLevel(name);
     }
 }

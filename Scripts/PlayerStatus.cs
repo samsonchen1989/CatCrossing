@@ -57,6 +57,7 @@ public class PlayerStatus : MonoBehaviour
     }
 
     #region public method
+
     public float GetLifePercent()
     {
         return (life / MaxNum);

@@ -27,7 +27,7 @@ public class CatControllerLogic : MonoBehaviour
     private CharacterController controller;
     private float speed = 6.0f;
     private float jumpSpeed = 15.0f;
-    private float gravity = 60.0f;
+    private float gravity = 200.0f;
     private bool canJump = true;
     private bool onGround;
     private Vector3 curNormal = Vector3.up; // smoothed terrain normal
