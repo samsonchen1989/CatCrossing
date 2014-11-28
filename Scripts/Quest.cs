@@ -10,6 +10,14 @@ public enum QuestProgress
     Done
 }
 
+public enum NpcQuestState
+{
+    QuestNone,
+    QuestEligible,
+    QuestUncomplete,
+    QuestComplete
+}
+
 [System.Serializable]
 public class Quest
 {

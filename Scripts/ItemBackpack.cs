@@ -20,6 +20,7 @@ public class ItemBackpack : MonoBehaviour
 
         // Just give one milk bottle to poor kitty for ui test
         Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(2, 1));
+        Inventory.Instance.AddStack(ItemPrefabsDefinition.StackClone(1, 15));
 
         this.transform.localPosition = new Vector3(-(spacing * (maxColumns / 2.0f)) + padding,
                                                    -(Screen.height / 2 - spacing * maxRows - padding),

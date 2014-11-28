@@ -20,6 +20,14 @@ public class QuestDispatcher : MonoBehaviour
 
     #endregion
 
+    #region Public gameObject to drop to in Inspector
+    
+    public GameObject questionMark;
+    public GameObject questionGreyMark;
+    public GameObject exclamationMark;
+    
+    #endregion
+
     int currentStep = 0;
 
     List<QuestNode> allQuests = new List<QuestNode>();
@@ -109,7 +117,7 @@ public class QuestDispatcher : MonoBehaviour
             }
         }
 
-        if (currentStep < allQuests.Count) {
+        if (currentStep < allQuests.Count - 1) {
             currentStep++;
         }
 
