@@ -58,11 +58,6 @@ public class QuestDispatcher : MonoBehaviour
         DispatchSceneQuest();
     }
 
-    void Update()
-    {
-
-    }
-
     // Todo, Init quest list of current scene from external file like json/xml.
     void InitQuestDispatcher()
     {

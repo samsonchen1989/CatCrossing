@@ -27,12 +27,6 @@ public class InteractiveItemInfo : MonoBehaviour
 
         itemCount = Random.Range(minItemCount, maxItemCount);
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public ItemStack GetItemStack()
     {

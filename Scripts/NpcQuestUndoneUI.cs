@@ -22,12 +22,6 @@ public class NpcQuestUndoneUI : MonoBehaviour
 
         RefreshUI();
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-    
-    }
 
     private void RefreshUI()
     {

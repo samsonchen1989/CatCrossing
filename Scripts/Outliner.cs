@@ -28,11 +28,6 @@ public class Outliner : MonoBehaviour
         MouseRaycastManager.Instance.HitTypeChanged += OnMouseHitObjectChanged;
     }
 
-    void Update()
-    {
-
-    }
-
     void OnDestroy()
     {
         // Unregister event OnMouseHitObjectChanged before destroy itself

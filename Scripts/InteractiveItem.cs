@@ -5,12 +5,6 @@ public class InteractiveItem : MonoBehaviour
 {
     const float MaxInteractDis = 5.0f;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         if (MouseRaycastManager.Instance.hitObjectType == HitObjectType.InteractiveItem) {

@@ -26,11 +26,6 @@ public class NpcQuestTrackerUI : MonoBehaviour {
             return;
         }
     }
-    
-    // Update is called once per frame
-    void Update () {
-    
-    }
 
     // QuestManager's AcceptedQuestID list has been changed, call
     // this function to re-init all UI

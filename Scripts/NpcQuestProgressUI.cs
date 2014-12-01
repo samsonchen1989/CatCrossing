@@ -31,12 +31,6 @@ public class NpcQuestProgressUI : MonoBehaviour
 
         RefreshUI();
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-    
-    }
 
     public void RefreshUI()
     {

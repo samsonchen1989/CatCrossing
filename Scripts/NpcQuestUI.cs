@@ -43,12 +43,6 @@ public class NpcQuestUI : MonoBehaviour
             return;
         }
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void DisplayQuestListUI()
     {
