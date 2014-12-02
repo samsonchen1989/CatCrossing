@@ -35,6 +35,8 @@ public class CatControllerLogic : MonoBehaviour
     private CatState state = CatState.Idle;
     private RaycastHit hit;
 
+    private Transform playerTransform;
+
     #endregion
 
     #region const value
@@ -68,6 +70,8 @@ public class CatControllerLogic : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         curDirection = this.transform.rotation.eulerAngles.y;
+        // Use cached transforms
+        playerTransform = this.transform;
     }
 
     // Update is called once per frame
@@ -95,10 +99,10 @@ public class CatControllerLogic : MonoBehaviour
         float rotationAmount = leftX * TurnSpeed;
         curDirection = (curDirection + rotationAmount) % 360;
 
-        transform.rotation = Quaternion.Euler(0, curDirection, 0);
+        playerTransform.rotation = Quaternion.Euler(0, curDirection, 0);
         
         moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
-        moveDirection = transform.TransformDirection(moveDirection);
+        moveDirection = playerTransform.TransformDirection(moveDirection);
         moveDirection *= speed;
 
         if (Input.GetButton("Jump") && canJump) {
@@ -106,7 +110,7 @@ public class CatControllerLogic : MonoBehaviour
             canJump = false;
         }
 
-        Ray ray = new Ray(transform.position, -1 * Vector3.up);
+        Ray ray = new Ray(playerTransform.position, -1 * Vector3.up);
         if (Physics.Raycast(ray, out hit)) {
             if (hit.distance <= 0.01) {
                 canJump = true;
@@ -145,14 +149,14 @@ public class CatControllerLogic : MonoBehaviour
         float rotationAmount = leftX * TurnSpeed;
         curDirection = (curDirection + rotationAmount) % 360;
         
-        Ray ray = new Ray(transform.position, -1 * Vector3.up);
+        Ray ray = new Ray(playerTransform.position, -1 * Vector3.up);
         if (Physics.Raycast(ray, out hit)) {
             Debug.DrawLine(ray.origin, hit.point, Color.blue);
             //Debug.Log("Hit distance:" + hit.distance);
             curNormal = Vector3.Lerp(curNormal, hit.normal, 4 * Time.deltaTime);
             //Quaternion rotateGround = Quaternion.FromToRotation (Vector3.up, curNormal);
             //transform.rotation = rotateGround * Quaternion.Euler(0, curDirection, 0);
-            transform.rotation = Quaternion.Euler(0, curDirection, 0);
+            playerTransform.rotation = Quaternion.Euler(0, curDirection, 0);
             Debug.Log("Set rotation");
 
             if (hit.distance < 0.1) {
@@ -162,7 +166,7 @@ public class CatControllerLogic : MonoBehaviour
             }
 
             if (!onGround && state != CatState.Jump) {
-                transform.position = hit.point;
+                playerTransform.position = hit.point;
             }
         }
     }
