@@ -71,15 +71,19 @@ public class MouseRaycastManager : MonoBehaviour
 
                     if (parentObject.tag == "NPC") {
                         this.hitObjectType = HitObjectType.NPC;
+                        UITooltip.ShowText(hitObject.GetComponent<Npc>().npcName);
                         return;
                     } else if (parentObject.tag == "Interactive Item") {
                         this.hitObjectType = HitObjectType.InteractiveItem;
+                        string name = ItemPrefabsDefinition.GetItemName(hitObject.GetComponent<InteractiveItemInfo>().itemID);
+                        UITooltip.ShowText(name);
                         return;
                     }
                 }
             }
         }
 
+        UITooltip.ShowText(null);
         this.hitObjectType = HitObjectType.Default;
         this.hitObject = null;
         this.hitDistance = -1;

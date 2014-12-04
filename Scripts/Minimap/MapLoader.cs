@@ -26,7 +26,8 @@ public class MapLoader : MonoBehaviour, IMapLoader
     // Use this for initialization
     void Start()
     {
-        var bundle = AssetBundle.CreateFromFile(string.Format("{0}/{1}", System.IO.Directory.GetCurrentDirectory(), "Data/mapData.dat"));
+        // No use if do not have unity pro.
+        //var bundle = AssetBundle.CreateFromFile(string.Format("{0}/{1}", System.IO.Directory.GetCurrentDirectory(), "Data/mapData.dat"));
         var mapSettings = new MapSettings("setting.txt");
         this.mapHandler = new MapHandler(this, null, mapSettings, LayerMask.NameToLayer("MiniMap"));
     

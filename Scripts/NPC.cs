@@ -15,6 +15,7 @@ public class Npc : MonoBehaviour
     #endregion
 
     public int npcID;
+    public string npcName;
     public string npcDialog;
     LinkedList<Quest> questList = new LinkedList<Quest>();
 
@@ -82,7 +83,7 @@ public class Npc : MonoBehaviour
     void Update()
     {
         if (MouseRaycastManager.Instance.hitObjectType == HitObjectType.NPC) {
-            if (clickable && Input.GetMouseButtonUp(1)) {
+            if (clickable && InputManager.GetMouseButtonUp(1)) {
                 questUI.displayQuestUI = true;
             }
         }

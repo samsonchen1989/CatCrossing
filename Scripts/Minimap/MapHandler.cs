@@ -206,9 +206,6 @@ public class MapHandler
 
     Vector2 GetSegmentCoordForPos(float x, float z)
     {
-        Debug.Log("x:" + x.ToString() + ", z:" + z.ToString());
-        Debug.Log("map offset, x:" + mapOffset.x.ToString() + ", mapoffset z:" + mapOffset.z.ToString());
-        Debug.Log("mapSettings, xMin:" + mapSettings.XMin.ToString() + ", xMax:" + mapSettings.XMax.ToString());
         var nX = Mathf.Clamp(x + mapOffset.x, mapSettings.XMin, mapSettings.XMax);
         var nZ = Mathf.Clamp(z + mapOffset.z, mapSettings.ZMin, mapSettings.ZMax);
         Debug.Log("nX:" + nX.ToString() + ", nZ:" + nZ.ToString());
@@ -249,6 +246,8 @@ public class MapHandler
     GameObject LoadSegmentAsyncAt(int x, int z)
     {
         Debug.Log("x:" + x + ", z:" + z);
+        // If have no unity pro and cannot export bundle, put the minimap prefab in
+        // "Resources" folder and use Resources.Load() to create the prefab.
         return Resources.Load(string.Format("Minimap/{0}-{1}.{2}", x, z, mapSettings.SegmentName), typeof(GameObject)) as GameObject;
         //return this.bundle.LoadAsync(string.Format("{0}-{1}.{2}", x, z, mapSettings.SegmentName), typeof(GameObject));
     }
