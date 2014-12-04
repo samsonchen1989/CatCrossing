@@ -13,7 +13,7 @@ A 3D survival game made by unity3d, scripts part.
 5. ~~Simple Terrian environment.~~
 6. ~~Item and Inventory system.~~ (2014.10.8)
 7. ~~Dialog & Quest system.~~ (2014.11.25)
-8. Game State Control, start, pause, game over.
-9. Mini map.
-10. Realtime Combat system.
-11. Online Game, Pomelo Server Maybe.
+8. ~~Game State Control, start, pause.~~ (2014.11.28)
+9. ~~Mini map.~~ (2014.12.4)
+10. Online Game, Pomelo Server Maybe.
+11. Realtime Combat system.
