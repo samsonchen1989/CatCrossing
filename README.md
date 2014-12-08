@@ -18,5 +18,5 @@ single player
 7. ~~Dialog & Quest system.~~ (2014.11.25)
 8. ~~Game State Control, start, pause.~~ (2014.11.28)
 9. ~~Mini map.~~ (2014.12.4)
-10. Online Game, Pomelo Server Maybe.
+10. Online Game, using Free Photon Cloud Server.
 11. Realtime Combat system.

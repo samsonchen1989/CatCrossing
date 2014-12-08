@@ -8,7 +8,7 @@ public class CatControllerLogic : MonoBehaviour
         Idle,
         Jump,
         Run
-    }   
+    }
 
     #region variables (private)
 

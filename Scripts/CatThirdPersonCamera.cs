@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ThirdPersonCamera : MonoBehaviour
+public class CatThirdPersonCamera : MonoBehaviour
 {
     #region Variables (private)
 
@@ -18,7 +18,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     // Private global only
     private Transform playerTransform;
-    private Vector3 nextCameraPosition;
 
     //Smoothing and damping
     private Vector3 velocityCamSmooth = Vector3.zero;
@@ -32,12 +31,16 @@ public class ThirdPersonCamera : MonoBehaviour
     private Quaternion cameraRotate;
     private float yHoriRotate = 0.0f;
 
+    private Transform gameCamTransform;
+
     #endregion
 
     // Use this for initialization
     void Start()
     {
-        playerTransform = GameObject.FindWithTag("Player").transform;
+        playerTransform = this.transform;
+        gameCamTransform = GameObject.FindWithTag("MainCamera").transform;
+
         toCamera = playerTransform.up * distanceUp + (-1) * playerTransform.forward * distanceAway;
     }
     
@@ -54,17 +57,12 @@ public class ThirdPersonCamera : MonoBehaviour
     void LateUpdate()
     {
         if (isRotating) {
-            Vector3 yAxis = Vector3.Cross(playerTransform.position - this.transform.position, Vector3.up);
+            Vector3 yAxis = Vector3.Cross(playerTransform.position - gameCamTransform.position, Vector3.up);
             cameraRotate = Quaternion.AngleAxis((-1 * Input.GetAxis("Mouse Y")) * rotateYSpeed, yAxis)
                 * Quaternion.AngleAxis(Input.GetAxis("Mouse X") * rotateXSpeed, playerTransform.up);
 
             toCamera = cameraRotate * toCamera;
         }
-
-        this.transform.position = playerTransform.position + toCamera;
-
-        yHoriRotate = (yHoriRotate + Input.GetAxis("Horizontal") * 2.0f);
-        this.transform.RotateAround(playerTransform.position, playerTransform.up, yHoriRotate);
 
         toCamera = toCamera * (1 - Input.GetAxis("Mouse ScrollWheel"));
         if (toCamera.sqrMagnitude < cameraZoomMin) {
@@ -72,9 +70,16 @@ public class ThirdPersonCamera : MonoBehaviour
         } else if (toCamera.sqrMagnitude > cameraZoomMax) {
             toCamera = Mathf.Sqrt(cameraZoomMax) * toCamera.normalized;
         }
+
+        gameCamTransform.position = playerTransform.position + toCamera;
+
+        yHoriRotate = (yHoriRotate + Input.GetAxis("Horizontal") * 2.0f);
+        gameCamTransform.RotateAround(playerTransform.position, playerTransform.up, yHoriRotate);
+
+        CheckCameraHit();
         
         //look at the player, may add offset to it
-        this.transform.LookAt(playerTransform.position + new Vector3(0f, yOffset, 0f));
+        gameCamTransform.LookAt(playerTransform.position + new Vector3(0f, yOffset, 0f));
     }
     
     #region Methods
@@ -82,7 +87,16 @@ public class ThirdPersonCamera : MonoBehaviour
     private void SmoothPosition(Vector3 fromPos, Vector3 toPos)
     {
         //Making a smooth transition between camera's current position and the position it wants to be in
-        this.transform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
+        gameCamTransform.position = Vector3.SmoothDamp(fromPos, toPos, ref velocityCamSmooth, camSmoothDampTime);
+    }
+
+    private void CheckCameraHit()
+    {
+        RaycastHit hitInfo;
+        Vector3 playerPosition = playerTransform.position + new Vector3(0f, yOffset, 0f);
+        if (Physics.Linecast(playerPosition, gameCamTransform.position, out hitInfo)) {
+            gameCamTransform.position = hitInfo.point + new Vector3(0.1f, 0.2f, 0f);
+        }
     }
 
     private float ClampAngle(float angle, float min, float max)
