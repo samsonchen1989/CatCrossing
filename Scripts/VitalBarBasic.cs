@@ -10,23 +10,36 @@ public class VitalBarBasic : MonoBehaviour
 
     private PlayerStatus playerStat;
 
-    void Awake()
+    void Start()
     {
         if (lifeSlider == null || hungrySlider == null) {
             Debug.LogError("Fail to get component UISlider");
             return;
         }
+    }
 
-        playerStat = GameObject.FindWithTag("Player").GetComponent<PlayerStatus>();
-        if (playerStat == null) {
-            Debug.LogError("Fail to get PlayerSTatus.");
-            return;
-        }
+    void OnEnable()
+    {
+        Messenger<GameObject>.AddListener(MyEventType.PLAYER_BORN, OnPlayerBorn);
+    }
+
+    void OnDisable()
+    {
+        Messenger<GameObject>.RemoveListener(MyEventType.PLAYER_BORN, OnPlayerBorn);
+    }
+
+    void OnPlayerBorn(GameObject player)
+    {
+        playerStat = player.GetComponent<PlayerStatus>();
     }
 	
     // Update is called once per frame
     void Update()
     {
+        if (playerStat == null) {
+            return;
+        }
+        
         lifeSlider.value = playerStat.GetLifePercent();
         hungrySlider.value = playerStat.GetHungryPercent();
     }

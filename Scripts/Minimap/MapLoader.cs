@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MapLoader : MonoBehaviour, IMapLoader
 {
-    public Transform player;
+    public Transform playerTrans;
 
     MapHandler mapHandler;
 
@@ -23,26 +23,46 @@ public class MapLoader : MonoBehaviour, IMapLoader
         this.mapHandler = null;
     }
 
+    void OnEnable()
+    {
+        Messenger<GameObject>.AddListener(MyEventType.PLAYER_BORN, OnPlayerBorn);
+    }
+
+    void OnDisable()
+    {
+        Messenger<GameObject>.RemoveListener(MyEventType.PLAYER_BORN, OnPlayerBorn);
+    }
+
+    void OnPlayerBorn(GameObject player)
+    {
+        playerTrans = player.transform;
+        this.MoveCam(playerTrans.position);
+        this.mapHandler.Start(playerTrans.position);
+    }
+
     // Use this for initialization
     void Start()
     {
-        // No use if do not have unity pro.
-        //var bundle = AssetBundle.CreateFromFile(string.Format("{0}/{1}", System.IO.Directory.GetCurrentDirectory(), "Data/mapData.dat"));
-        var mapSettings = new MapSettings("setting.txt");
+        /* No use if do not have unity pro.
+        var bundle = AssetBundle.CreateFromFile(string.Format("{0}/{1}", System.IO.Directory.GetCurrentDirectory(),
+                                                "Data/mapData.dat"));
+        */
+        var mapSettings = new MapSettings("setting");
         this.mapHandler = new MapHandler(this, null, mapSettings, LayerMask.NameToLayer("MiniMap"));
-    
-        this.MoveCam(player.position);
-        this.mapHandler.Start(player.position);
     }
     
     // Update is called once per frame
     void Update()
     {
-        this.MoveCam(player.position);
+        if (playerTrans == null) {
+            return;
+        }
+
+        this.MoveCam(playerTrans.position);
 
         this.timer += Time.deltaTime;
         if (timer > mapCheck) {
-            this.mapHandler.UpdateMap(player.position);
+            this.mapHandler.UpdateMap(playerTrans.position);
             this.timer = 0;
         }
     }

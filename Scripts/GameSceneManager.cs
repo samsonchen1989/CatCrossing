@@ -7,6 +7,18 @@ public class GameSceneManager : MonoBehaviour
     private IStateBase activeState;
 
     private static GameSceneManager instance;
+
+    public static GameSceneManager Instance
+    {
+        get {
+            if (instance == null) {
+                Debug.LogError("Fail to get GameSceneManager instance.");
+            }
+
+            return instance;
+        }
+    }
+
     public static string StartScene = "Scene0";
     public static string PlayScene = "Scene1";
     public static string LoadScene = "Loading";
@@ -26,6 +38,7 @@ public class GameSceneManager : MonoBehaviour
         if (Application.loadedLevelName != StartScene) {
             Application.LoadLevel(StartScene);
         }
+
     }
     
     void Update()
@@ -33,6 +46,11 @@ public class GameSceneManager : MonoBehaviour
         if (activeState != null) {
             activeState.StateUpdate();
         }
+    }
+
+    void OnDisable()
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public void SwitchState(IStateBase newState)
@@ -47,12 +65,14 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    // "Play" button click delegate
-    public void Play()
+    // "Login" button click delegate
+    public void Login()
     {
         if (Application.loadedLevelName != PlayScene) {
             StartCoroutine(InnerLoad(PlayScene));
         }
+
+        NetworkManager.Instance.JoinRoom(NetworkManager.RoomName);
     }
 
     // Quit function will be ignored in Editor or web application
@@ -66,6 +86,7 @@ public class GameSceneManager : MonoBehaviour
         Application.LoadLevel(LoadScene);
         // Wait for one frame
         yield return null;
+        //yield return new WaitForSeconds(3f);
 
         Application.LoadLevel(name);
     }

@@ -90,7 +90,7 @@ public class MapHandler
     void PrepareMapAt(Vector3 pos)
     {
         this.mapBounds = this.GetMapBoundsForPos(pos);
-        Debug.Log(string.Format("MapBounds, xMin:{0}, xMax:{1}, yMin:{2}, yMax:{3}", mapBounds.xMin, mapBounds.xMax, mapBounds.yMin, mapBounds.yMax));
+        //Debug.Log(string.Format("MapBounds, xMin:{0}, xMax:{1}, yMin:{2}, yMax:{3}", mapBounds.xMin, mapBounds.xMax, mapBounds.yMin, mapBounds.yMax));
         // Bottom left
         this.loadedSegments[0, 0] = new MapSegment() { gameObject = LoadAndCreateSegmentAt(mapBounds.xMin, mapBounds.yMin), state = SegmentState.Active};
         // Bottom right
@@ -174,7 +174,7 @@ public class MapHandler
     Rect GetMapBoundsForPos(float x, float z)
     {
         var currSegCoord = this.GetSegmentCoordForPos(x, z);
-        Debug.Log(string.Format("currSegCoord:{0}, {1}.", currSegCoord.x, currSegCoord.y));
+        //Debug.Log(string.Format("currSegCoord:{0}, {1}.", currSegCoord.x, currSegCoord.y));
 
         Rect bounds = new Rect(currSegCoord.x, currSegCoord.y, mapSettings.Length, mapSettings.Width);
         if (bounds.xMax > mapSettings.XMax) {
@@ -208,15 +208,15 @@ public class MapHandler
     {
         var nX = Mathf.Clamp(x + mapOffset.x, mapSettings.XMin, mapSettings.XMax);
         var nZ = Mathf.Clamp(z + mapOffset.z, mapSettings.ZMin, mapSettings.ZMax);
-        Debug.Log("nX:" + nX.ToString() + ", nZ:" + nZ.ToString());
+        //Debug.Log("nX:" + nX.ToString() + ", nZ:" + nZ.ToString());
 
         var pX = (int)(nX / mapSettings.Length);
         var pZ = (int)(nZ / mapSettings.Width);
-        Debug.Log("pX:" + pX.ToString() + ", pZ:" + pZ.ToString());
+        //Debug.Log("pX:" + pX.ToString() + ", pZ:" + pZ.ToString());
 
         var aX = pX * mapSettings.Length;
         var aZ = pZ * mapSettings.Width;
-        Debug.Log("aX:" + aX.ToString() + ", aZ:" + aZ.ToString());
+        //Debug.Log("aX:" + aX.ToString() + ", aZ:" + aZ.ToString());
 
         return new Vector2(aX, aZ);
     }
@@ -245,7 +245,7 @@ public class MapHandler
     //AssetBundleRequest LoadSegmentAsyncAt(int x, int z)
     GameObject LoadSegmentAsyncAt(int x, int z)
     {
-        Debug.Log("x:" + x + ", z:" + z);
+        //Debug.Log("x:" + x + ", z:" + z);
         // If have no unity pro and cannot export bundle, put the minimap prefab in
         // "Resources" folder and use Resources.Load() to create the prefab.
         return Resources.Load(string.Format("Minimap/{0}-{1}.{2}", x, z, mapSettings.SegmentName), typeof(GameObject)) as GameObject;

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 
-using UnityEditor;
 using UnityEngine;
 
 // Minimap setting file reader
@@ -21,7 +20,7 @@ public class MapSettings
 
     public MapSettings(string fileName)
     {
-        var textAsset = (TextAsset) AssetDatabase.LoadAssetAtPath(string.Format("Assets/Minimap/{0}", fileName), typeof(TextAsset));
+        TextAsset textAsset = Resources.Load(string.Format("Minimap/{0}", fileName)) as TextAsset;
         if (textAsset == null) {
             throw new System.IO.FileNotFoundException("Minimap setting file not found.");
         }

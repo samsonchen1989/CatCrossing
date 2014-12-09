@@ -17,6 +17,7 @@ public class StartSceneController : MonoBehaviour
     public GameObject selectLabel;
     public GameObject catMesh;
     public UILabel pingLabel;
+    public UIButton loginButton;
 
     #endregion
 
@@ -30,8 +31,8 @@ public class StartSceneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (buttonLabel == null || selectLabel == null || pingLabel == null) {
-            Debug.LogError("Fail to find button/select/ping label.");
+        if (buttonLabel == null || selectLabel == null || pingLabel == null || loginButton ==  null) {
+            Debug.LogError("Fail to find button/select/ping label or login button.");
             return;
         }
 
@@ -48,9 +49,9 @@ public class StartSceneController : MonoBehaviour
         catTransform = this.transform;
 
         // Connect to photon cloud server
-        PhotonNetwork.ConnectUsingSettings("0.1");
-
-        StartCoroutine(RefreshPhotonServerPing());
+        if (NetworkManager.Instance.ConnectUsingSettings("0.1")) {
+            StartCoroutine(RefreshPhotonServerPing());
+        }
     }
     
     // Update is called once per frame
@@ -69,6 +70,13 @@ public class StartSceneController : MonoBehaviour
             pingLabel.text = PhotonNetwork.networkingPeer.RoundTripTime.ToString() + " ms";
             yield return new WaitForSeconds(5.0f);
         }
+    }
+
+    public void OnFailedToConnectToPhoton()
+    {
+        pingLabel.text = "N/A";
+        StopCoroutine(RefreshPhotonServerPing());
+        loginButton.isEnabled = false;
     }
 
     public void BrownMaterial()
