@@ -3,7 +3,7 @@ using System.Collections;
 
 public enum MaterialType
 {
-    Brown,
+    Brown = 0,
     Black,
     White,
     Grey
@@ -17,6 +17,7 @@ public class StartSceneController : MonoBehaviour
     public GameObject selectLabel;
     public GameObject catMesh;
     public UILabel pingLabel;
+    public UIInput nameInput;
     public UIButton loginButton;
 
     #endregion
@@ -31,8 +32,9 @@ public class StartSceneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (buttonLabel == null || selectLabel == null || pingLabel == null || loginButton ==  null) {
-            Debug.LogError("Fail to find button/select/ping label or login button.");
+        if (buttonLabel == null || selectLabel == null || pingLabel == null ||
+            loginButton ==  null || nameInput == null) {
+            Debug.LogError("Fail to find button/select/ping/name label or login button.");
             return;
         }
 
@@ -117,6 +119,21 @@ public class StartSceneController : MonoBehaviour
 
         meshRenderer.material = Resources.Load("Materials/cu_cat_col_low3") as Material;
         matType = MaterialType.Grey;
+    }
+
+    public void Login()
+    {
+        if (string.IsNullOrEmpty(nameInput.value)) {
+            nameInput.GetComponent<TweenColor>().PlayForward();
+            return;
+        }
+
+        // Store name and material type first
+        PlayerPrefs.SetString("name", nameInput.value);
+        PlayerPrefs.SetInt("type", (int)matType);
+
+        ChatHandler.Instance.ConnectChatServer(nameInput.value);
+        GameSceneManager.Instance.Login();
     }
 
     public void Play()

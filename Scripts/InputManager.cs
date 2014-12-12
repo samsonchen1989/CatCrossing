@@ -35,4 +35,31 @@ public static class InputManager
         
         return false;
     }
+
+    public static bool GetButton(string name)
+    {
+        if (UICamera.inputHasFocus) {
+            return false;
+        } else {
+            return Input.GetButton(name);
+        }
+    }
+
+    public static bool GetKeyUp(KeyCode key)
+    {
+        if (UICamera.inputHasFocus) {
+            return false;
+        } else {
+            return Input.GetKeyUp(key);
+        }
+    }
+
+    public static float GetAxis(string axisName)
+    {
+        if (UICamera.inputHasFocus) {
+            return 0f;
+        } else {
+            return Input.GetAxis(axisName);
+        }
+    }
 }

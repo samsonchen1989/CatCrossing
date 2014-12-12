@@ -50,9 +50,17 @@ public class NetworkManager : MonoBehaviour
     void Update()
     {
         if (!playerIniated && isJoinedRoom && Application.loadedLevelName == GameSceneManager.PlayScene) {
-            GameObject player = PhotonNetwork.Instantiate("Player", bornLocation, bornRotate, 0);
+            string name = PlayerPrefs.GetString("name");
+            int type = PlayerPrefs.GetInt("type");
+
+            GameObject player = PhotonNetwork.Instantiate("Player", bornLocation, bornRotate, 0,
+                                                          new object[] { name, type });
+
             player.GetComponent<CatControllerLogic>().enabled = true;
             player.GetComponent<CatThirdPersonCamera>().enabled = true;
+
+            //player.GetComponent<PlayerStatus>().SetMeshType(type);
+            //player.GetComponent<PlayerStatus>().name = name;
             
             playerIniated = true;
             Messenger<GameObject>.Invoke("PlayerBorn", player);

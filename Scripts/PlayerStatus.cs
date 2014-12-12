@@ -11,6 +11,10 @@ public class PlayerStatus : MonoBehaviour
         Sick
     };
 
+    public GameObject catMesh;
+
+    public string name { get; set; }
+
     public float life { get; set; }
 
     public float hungry { get; set; }
@@ -35,6 +39,10 @@ public class PlayerStatus : MonoBehaviour
             Debug.LogError("Fail to find TOD's DayNightCycle component");
         }
 
+        if (catMesh == null) {
+            Debug.LogError("Fail to find cat mesh");
+        }
+
         dayNightSpeed = MaxNum * Time.deltaTime / (timeCycle.speed * (MaxHungryDay - 1));
     }
     
@@ -57,6 +65,30 @@ public class PlayerStatus : MonoBehaviour
     }
 
     #region public method
+
+    public void SetMeshType(int type)
+    {
+        switch(type) {
+            // Brown
+            case 0:
+                catMesh.GetComponent<SkinnedMeshRenderer>().material = Resources.Load("Materials/cu_cat_col_low") as Material;
+                break;
+            // Black
+            case 1:
+                catMesh.GetComponent<SkinnedMeshRenderer>().material = Resources.Load("Materials/cu_cat_col_low1") as Material;
+                break;
+            // White
+            case 2:
+                catMesh.GetComponent<SkinnedMeshRenderer>().material = Resources.Load("Materials/cu_cat_col_low2") as Material;
+                break;
+            // Grey
+            case 3:
+                catMesh.GetComponent<SkinnedMeshRenderer>().material = Resources.Load("Materials/cu_cat_col_low3") as Material;
+                break;
+            default:
+                break;
+        }
+    }
 
     public float GetLifePercent()
     {
