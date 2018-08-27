@@ -4,11 +4,11 @@ Catcrossing
 A 3D survival game made by unity3d, scripts part.
 
 single player
-![alt text](http://106.186.28.188/wordpress/wp-content/uploads/2014/12/屏幕快照-2014-12-04-20.28.38.png)
+![alt text](http://ww4.sinaimg.cn/mw690/415362c7jw1eltofw7a4vj21kw0zkth6.jpg)
 
 multi player
-![alt text](http://106.186.28.188/wordpress/wp-content/uploads/2014/12/QQ20141213-1@2x.png)
-![alt text](http://106.186.28.188/wordpress/wp-content/uploads/2014/12/屏幕快照-2014-12-13-00.58.26.png)
+![alt text](http://ww1.sinaimg.cn/mw690/415362c7jw1en7eb8wapvj21kw0tg7g0.jpg)
+![alt text](http://ww3.sinaimg.cn/mw690/415362c7jw1en7ebkzs6ij21kw0w27do.jpg)
 
 Online Play Address(https://dl.dropboxusercontent.com/u/22810365/catcrossing.html)
 
